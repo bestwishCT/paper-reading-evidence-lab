@@ -1,0 +1,1 @@
+保留D1至D4任务对应和数值单位核对。evidence.source_id只允许以下枚举值：["A-P4", "A-P14"]。例如 {"source_id":"A-P14","start_line":26,"end_line":33}。只填写ID本身，绝不带SOURCE、physical PDF page、页码后缀；不要复制整个来源标题。每个evidence必须逐字匹配一个枚举ID。结论与限制简明，证据不足明说。

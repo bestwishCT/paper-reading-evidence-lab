@@ -1,0 +1,107 @@
+{
+  "source_map": {
+    "D1": [
+      "SOURCE A-P16 physical PDF page 16",
+      "SOURCE A-P15 physical PDF page 15"
+    ],
+    "D2": [
+      "SOURCE A-P21 physical PDF page 21"
+    ],
+    "D3": [
+      "SOURCE A-P16 physical PDF page 16",
+      "SOURCE A-P21 physical PDF page 21",
+      "SOURCE A-P15 physical PDF page 15"
+    ],
+    "D4": [
+      "SOURCE A-P15 physical PDF page 15",
+      "SOURCE A-P5 physical PDF page 5",
+      "SOURCE A-P4 physical PDF page 4",
+      "SOURCE A-P21 physical PDF page 21"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "重建 Table 15 的设置：表格为两行（Short instruction / Full instruction）四列（Fluency (MAUVE)、Correct. (EM Rec.)、Citation Rec.、Citation Prec.）。直接计算“Full 减 Short”的四项差值并说明量纲：\n- MAUVE：66.6 − 64.1 = +2.5（MAUVE 分数点）\n- Correct. (EM Rec.)：40.4 − 39.5 = +0.9（百分点，EM recall/accuracy 的百分比点）\n- Citation Rec.：73.6 − 69.6 = +4.0（百分点，citation recall 的百分比点）\n- Citation Prec.：72.5 − 73.2 = −0.7（百分点，citation precision 的百分比点）\n此外说明这些報表值是跨三个随机 seed 的平均值（均值），标准差在附录 G.6 中给出但表内未展示，因此无法仅凭表中均值判断显著性。\n（区分：MAUVE 为语用/流畅度指标的分数，其他三列以百分比表示。）",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P16 physical PDF page 16",
+          "start_line": 47,
+          "end_line": 52
+        },
+        {
+          "source_id": "SOURCE A-P15 physical PDF page 15",
+          "start_line": 12,
+          "end_line": 18
+        }
+      ],
+      "limitations": "表中只给出均值（表内未给出标准差或置信区间），因此不能断言差异是否统计显著；MAUVE 的绝对量纲（定义细节）和百分比分母隐含为 100，但原文仅以小数百分比形式展示，未详述分母或样本数细节；均值来源是三次实验的平均（证据有），但具体方差需查附录 G.6。"
+    },
+    {
+      "id": "D2",
+      "answer": "比较 Table 23（Full instruction）和 Table 24（Short instruction）：\n- Short instruction（Table 24）文本为：\"Write a high-quality answer for the given question using only the provided search results and cite them properly using [1][2][3].\"（简短要求：用检索结果写高质量答案并按 [1][2][3] 引用。）\n- Full instruction（Table 23）包含更具体的/新增的要求：要求回答\"accurate, engaging, and concise\"（准确、吸引和简洁），采用\"unbiased and journalistic tone\"，\"Always cite for any factual claim\"，并对引用粒度做硬性限制——\"每句至少引用 1 篇且至多 3 篇\"，以及在多文档支持时只引用\"minimum sufficient subset\"。\n结论（短/长指令的已有 vs 新增要求区分）：短指令已包含“使用检索结果并按 [1][2][3] 引用”的基本要求；Full 指令在此基础上新增或明确了（1）写作风格（准确/吸引/简洁/无偏见/新闻体）、（2）对每个事实性陈述必须引用的强制性要求、（3）每句引用的上下限（1–3 篇）和“最小充分子集”这一最小性偏好。\n（区分：上述都是作者给出的 prompt 指令文本，而非模型行为观测。）",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P21 physical PDF page 21",
+          "start_line": 44,
+          "end_line": 53
+        }
+      ],
+      "limitations": "只能对比文本差别并列出新增/共有项；无法从文本确认模型是否在运行时严格遵守这些要求或哪一条具体导致性能变化（需要行为/消融实验）。"
+    },
+    {
+      "id": "D3",
+      "answer": "基于表中证据，不能证明“所有指标都提高”或“越长的指令必然更好”，也不能把提升归因于某一句措辞单独带来的收益：\n- 观测（表格数据）：Full 相比 Short 在三项中有提升（MAUVE +2.5 分、Correct.+0.9 百分点、Citation Rec.+4.0 百分点），但 Citation Prec. 下降 −0.7 百分点；因此不是“全部指标提高”。（数据来自 Table 15）\n- 作者在论文中也断言（结论性陈述）：全文版“induces stronger correctness and citation recall, while the two instructions lead to similar citation precision”。这与表中数值一致，且作者未声称单一句子或单一微改造成该提升。（见 G.2 描述）\n- 关于归因：Table 23（Full）与 Table 24（Short）包含多项差异（写作风格、强制引用每句、最小充分子集等），这是“整包改动（package change）”而非单因素消融。因此从当前两组对比无法断定哪一项措辞或约束单独导致提升，也无法排除多因素联合效果或随机性导致的小幅差异。\n结论：表格证据支持“Full 指令整体带来更高 correctness 与 citation recall 的均值”，但不能证明普适性（越长越好）或把收益归因于单一句措辞，需更多逐项消融或显著性检验来断言单因素效应。",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P16 physical PDF page 16",
+          "start_line": 47,
+          "end_line": 52
+        },
+        {
+          "source_id": "SOURCE A-P21 physical PDF page 21",
+          "start_line": 44,
+          "end_line": 53
+        },
+        {
+          "source_id": "SOURCE A-P15 physical PDF page 15",
+          "start_line": 12,
+          "end_line": 18
+        }
+      ],
+      "limitations": "表中仅给出两种指令的均值（跨三个 seed 的平均），没有表内显著性检验或逐项消融；因此不能断言因果性或普适性。作者在文本中也未提供逐条指令元素的独立 ablation 结果。"
+    },
+    {
+      "id": "D4",
+      "answer": "结合主实验的三 seed 约定与评价设计，解释均值、方差与显著性，并指出“prompt 要求最小充分引用子集”不等于评价器会严格惩罚所有冗余：\n- 关于均值和方差／显著性：论文说明“主实验……每个模型跑三次不同 seed，并报告均值，标准差在 Appendix G.6”。因此表内数值是三次运行的均值（mean），而方差/标准差需从附录查看，单凭均值无法判定差异是否统计显著。作者明确说明均值来源，标准差另列（见 Main experiments 描述）。\n- 关于评价器对最小性与冗余的态度：尽管 Full 指令要求“如果多篇文档支持句子，仅引用 minimum sufficient subset”（prompt 要求，作者在 Table 23 中写明），但评价器设计上并不要求引用最小集合，也不会严格惩罚冗余引用。论文在 citation precision 的定义处说明：precision 旨在检测“irrelevant”引用，但“不要求 citing a minimal set”，并指出这是刻意设定，因为人类写作常引用冗余来源以增强可信度。因此 prompt 的“最小充分子集”偏好与评估器的容忍冗余的设计存在不一致。\n- 另外，precision 的计算对 recall 有前置条件（precision=1 的判定以 recall=1 为前提），这使得 precision 的判定与 recall 紧耦合，影响对“最小引用”策略的衡量。\n综合：报告的均值需要配合标准差/显著性检验解释；且即便 prompt 要求最小引用集合，评价器并不必然会惩罚冗余引用，两者目标与判罚机制不同。",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P15 physical PDF page 15",
+          "start_line": 12,
+          "end_line": 18
+        },
+        {
+          "source_id": "SOURCE A-P5 physical PDF page 5",
+          "start_line": 23,
+          "end_line": 29
+        },
+        {
+          "source_id": "SOURCE A-P4 physical PDF page 4",
+          "start_line": 123,
+          "end_line": 129
+        },
+        {
+          "source_id": "SOURCE A-P21 physical PDF page 21",
+          "start_line": 48,
+          "end_line": 49
+        }
+      ],
+      "limitations": "无法从主文表格直接得到标准差和显著性，需要查 Appendix G.6；关于 evaluator 容忍冗余的细节（例如在何种程度被视为 irrelevant），作者也指出其方法无法自动检测“部分支持”的引用并会对这种情况误判，因此不能断言评价器在所有冗余情形下一致宽容。"
+    }
+  ],
+  "final_check": {
+    "missing_items": "已核对 D1–D4：数值差分（D1）、指令文本差异（D2）、归因限制（D3）、均值/方差与评价设计不一致（D4）均已覆盖。未能提供的项：表中标准差与显著性检验值（需附录 G.6），以及逐项指令元素的消融结果（论文未在所给文本中提供）。",
+    "units_verified": "已区分 MAUVE（分数）与其他三列（百分比/百分点），并说明百分比的语义与表内展示一致。分母（样本数）和置信区间未在主表中给出，已标注为限制。",
+    "json_validity": "本文件为严格 JSON，decisions 数组包含 D1–D4 各一项；每项包含 answer、evidence（含原始 source_id）、limitations。注意：字段齐全不等于证据充分，文中若缺数据已在 limitations 中说明。"
+  }
+}

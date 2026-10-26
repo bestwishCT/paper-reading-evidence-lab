@@ -1,0 +1,98 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "B-P5",
+      "start_line": 57,
+      "end_line": 63,
+      "text": "and oracle settings (Table 1). In the closed-book\nsetting, models are not given any documents in\ntheir input context, and must rely on their paramet-\nric memory to generate the correct answer. On the\nother hand, in the oracle setting, language models\nare given the single document that contains the\nanswer and must use it to answer the question."
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P3",
+      "start_line": 51,
+      "end_line": 63,
+      "text": "analyze model performance on multi-document\nquestion answering, which requires models to find\nrelevant information within an input context and\nuse it to answer the question. In particular, we\nmake controlled changes to the length of the input\ncontext and the position of the relevant informa-\ntion and measure changes in task performance.\n2.1 Experimental Setup\nIn the multi-document question answering task,\nthe model inputs are (i) a question to answer and\n(ii) k documents (e.g., passages from Wikipedia),\nwhere exactly one of the documents contains the\nanswer to the question and k −1 ‘‘distractor’’"
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P3",
+      "start_line": 59,
+      "end_line": 66,
+      "text": "In the multi-document question answering task,\nthe model inputs are (i) a question to answer and\n(ii) k documents (e.g., passages from Wikipedia),\nwhere exactly one of the documents contains the\nanswer to the question and k −1 ‘‘distractor’’\ndocuments do not. This task requires the model\nto access the document that contains the answer\nwithin its input context and use it to answer the"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P5",
+      "start_line": 40,
+      "end_line": 46,
+      "text": "Model Closed-Book Oracle\nLongChat-13B (16K) 35.0% 83.4%\nMPT-30B-Instruct 31.5% 81.9%\nGPT-3.5-Turbo 56.1% 88.3%\nGPT-3.5-Turbo (16K) 56.0% 88.6%\nClaude-1.3 48.3% 76.1%\nClaude-1.3 (100K) 48.2% 76.4%"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P5",
+      "start_line": 47,
+      "end_line": 49,
+      "text": "Table 1: Closed-book and oracle accuracy of\nlanguage models on the multi-document question\nanswering task."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P5",
+      "start_line": 61,
+      "end_line": 63,
+      "text": "other hand, in the oracle setting, language models\nare given the single document that contains the\nanswer and must use it to answer the question."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P3",
+      "start_line": 19,
+      "end_line": 23,
+      "text": "trast to our controlled multi-document QA task,\nwhere the context always contains exactly one\ndocument that answers the question, none or\nmany of the top k documents may contain the\nanswer in the open-domain QA setting. When"
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P3",
+      "start_line": 26,
+      "end_line": 32,
+      "text": "performance saturates long before retriever re-\ncall saturates, indicating that current models\nfail to effectively use additional retrieved doc-\numents—using 50 documents instead of 20\nretrieved documents only marginally improves\nperformance ( ∼1.5% for GPT-3.5-Turbo and\n∼1% for claude-1.3)."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P6",
+      "start_line": 9,
+      "end_line": 16,
+      "text": "example, GPT-3.5-Turbo’s multi-document QA\nperformance can drop by more than 20%—in the\nworst case, performance in 20- and 30-document\nsettings is lower than performance without any\ninput documents (i.e., closed-book performance;\n56.1%). These results indicate that current models\ncannot effectively reason over their entire context\nwindow when prompted for downstream tasks."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P5",
+      "start_line": 1,
+      "end_line": 4,
+      "text": "Figure 5: The effect of changing the position of relevant information (document containing the answer) on\nmulti-document question answering performance. Lower positions are closer to the start of the input context.\nPerformance is highest when relevant information occurs at the very start or end of the context, and rapidly\ndegrades when models must reason over information in the middle of their input context."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P6",
+      "start_line": 9,
+      "end_line": 16,
+      "text": "example, GPT-3.5-Turbo’s multi-document QA\nperformance can drop by more than 20%—in the\nworst case, performance in 20- and 30-document\nsettings is lower than performance without any\ninput documents (i.e., closed-book performance;\n56.1%). These results indicate that current models\ncannot effectively reason over their entire context\nwindow when prompted for downstream tasks."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P3",
+      "start_line": 21,
+      "end_line": 23,
+      "text": "document that answers the question, none or\nmany of the top k documents may contain the\nanswer in the open-domain QA setting. When"
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P3",
+      "start_line": 86,
+      "end_line": 90,
+      "text": "To collect k −1 distractor documents that do\nnot contain the answer, we use a retrieval system\n(Contriever, fine-tuned on MS-MARCO; Izacard\net al., 2021) to retrieve the k−1 Wikipedia chunks\nthat are most relevant to the query and do not"
+    }
+  ]
+}

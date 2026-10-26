@@ -1,0 +1,77 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P16",
+      "start_line": 47,
+      "end_line": 52,
+      "text": "Fluency Correct. Citation\n(MAUVE) (EM Rec.) Rec. Prec.\nChatGPT(VANILLA, 5-doc)\nShort instruction 64.1 39.5 69.6 73.2\nFull instruction 66.6 40.4 73.6 72.5\nTable 15: Effect of different instructions on ASQA."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P16",
+      "start_line": 38,
+      "end_line": 42,
+      "text": "Table 15 shows results of using a full instruction\n(Table 23) and a short version of the instruction\n(Table 24). We see that the full version induces\nstronger correctness and citation recall, while the\ntwo instructions lead to similar citation precision."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P21",
+      "start_line": 44,
+      "end_line": 49,
+      "text": "Instruction: Write an accurate, engaging, and concise answer for the given question using only\nthe provided search results (some of which might be irrelevant) and cite them properly. Use an\nunbiased and journalistic tone. Always cite for any factual claim. When citing several search\nresults, use [1][2][3]. Cite at least one document and at most three documents in each sentence.\nIf multiple documents support the sentence, only cite a minimum sufficient subset of the\ndocuments."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P21",
+      "start_line": 50,
+      "end_line": 53,
+      "text": "Table 23: Instruction for VANILLA .\nInstruction: Write a high-quality answer for the given question using only the provided search\nresults and cite them properly using [1][2][3].\nTable 24: Short instruction for VANILLA ."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P16",
+      "start_line": 47,
+      "end_line": 52,
+      "text": "Fluency Correct. Citation\n(MAUVE) (EM Rec.) Rec. Prec.\nChatGPT(VANILLA, 5-doc)\nShort instruction 64.1 39.5 69.6 73.2\nFull instruction 66.6 40.4 73.6 72.5\nTable 15: Effect of different instructions on ASQA."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P21",
+      "start_line": 44,
+      "end_line": 49,
+      "text": "Instruction: Write an accurate, engaging, and concise answer for the given question using only\nthe provided search results (some of which might be irrelevant) and cite them properly. Use an\nunbiased and journalistic tone. Always cite for any factual claim. When citing several search\nresults, use [1][2][3]. Cite at least one document and at most three documents in each sentence.\nIf multiple documents support the sentence, only cite a minimum sufficient subset of the\ndocuments."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P15",
+      "start_line": 12,
+      "end_line": 18,
+      "text": "Main experiments. For all experiments except\nChatGPT RERANK , we run each model three times\nwith different seeds and each time we sample two\ndemonstrations from a pool of four. We report the\naveraged scores for all experiments in the main\npaper and we report the standard deviations in Ap-\npendix G.6."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P15",
+      "start_line": 12,
+      "end_line": 18,
+      "text": "Main experiments. For all experiments except\nChatGPT RERANK , we run each model three times\nwith different seeds and each time we sample two\ndemonstrations from a pool of four. We report the\naveraged scores for all experiments in the main\npaper and we report the standard deviations in Ap-\npendix G.6."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P4",
+      "start_line": 123,
+      "end_line": 129,
+      "text": "Citation precision. Our citation precision evalua-\ntion detects citations that are irrelevant, but it does\nnot require citing a minimal set. We follow this de-\nsign because human writing often cites redundant\nsources to enhance credibility; human readers may\nalso appreciate multiple citations, especially when\nit pertains to critical claims such as medical advice."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P21",
+      "start_line": 46,
+      "end_line": 49,
+      "text": "unbiased and journalistic tone. Always cite for any factual claim. When citing several search\nresults, use [1][2][3]. Cite at least one document and at most three documents in each sentence.\nIf multiple documents support the sentence, only cite a minimum sufficient subset of the\ndocuments."
+    }
+  ]
+}

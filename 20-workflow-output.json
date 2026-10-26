@@ -1,0 +1,131 @@
+{
+  "mapping": {
+    "D1": [
+      "B-P5 physical PDF page 5",
+      "B-P3 physical PDF page 3"
+    ],
+    "D2": [
+      "B-P5 physical PDF page 5",
+      "B-P3 physical PDF page 3"
+    ],
+    "D3": [
+      "B-P5 physical PDF page 5",
+      "B-P3 physical PDF page 3"
+    ],
+    "D4": [
+      "B-P6 physical PDF page 6",
+      "B-P5 physical PDF page 5",
+      "B-P3 physical PDF page 3"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "定义与区分（基于文献给出的明确定义、观测与推论分开呈现）：\n- 定义（作者给出）：closed-book 设置——模型在输入上下文中不包含任何文档，必须依赖参数化记忆来回答问题；oracle（文献术语）——向模型直接提供“包含答案的单个文档”，模型必须使用该文档生成答案；受控多文档 QA——输入为一个问题和 k 个文档，其中恰好一个文档包含答案，其余 k−1 为干扰文档（由检索器或其他方法选出且不包含标注答案），任务是从上下文中找到并使用包含答案的文档。  \n- 观测（作者报告的实验条件）：受控多文档任务使用 NaturalQuestions-Open 的子集（作者选择长答案为段落的 2655 条查询），文档以最多 100 令牌的段落块作为输入单元；干扰文档通过检索器选择但不包含标注答案。  \n- 推论（我的说明）：三者的关键差别在于信息源的可用性和来源：closed-book 没有上下文文档、oracle 人为把正确文档直接交给模型、受控多文档则模拟检索场景但保证恰有一份文档为“金牌”答案（因此既检验检索后文档使用，又能控制干扰数）。",
+      "evidence": [
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 56,
+          "end_line": 63
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 59,
+          "end_line": 66
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 73,
+          "end_line": 76
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 86,
+          "end_line": 92
+        }
+      ],
+      "limitations": "回答仅基于所给页（B-P3、B-P5）里的明确定义与实验说明。文中未提供更广义的“oracle”或“检索器输出”实现细节，故不能推断其它评测中相同术语的确切含义或实现。"
+    },
+    {
+      "id": "D2",
+      "answer": "抄表与计算（记录对象与表头、单位、基准与条件）：\n- 表对象与条件：Table 1 报告的是多文档问答任务上的准确率（accuracy，按百分比表示），基于作者在 2.1–2.3 节的多文档 QA 实验设置（NaturalQuestions-Open 的段落级查询子集，见数据说明）。表头两列分别为“Closed-Book”和“Oracle”准确率，单位为“%”。\n- 原表（逐行抄录）：\n  1) LongChat-13B (16K): Closed-Book = 35.0% ; Oracle = 83.4%  \n  2) MPT-30B-Instruct: Closed-Book = 31.5% ; Oracle = 81.9%  \n  3) GPT-3.5-Turbo: Closed-Book = 56.1% ; Oracle = 88.3%  \n  4) GPT-3.5-Turbo (16K): Closed-Book = 56.0% ; Oracle = 88.6%  \n  5) Claude-1.3: Closed-Book = 48.3% ; Oracle = 76.1%  \n  6) Claude-1.3 (100K): Closed-Book = 48.2% ; Oracle = 76.4%  \n- 计算（Oracle − Closed-Book，百分点差）：\n  1) LongChat-13B (16K): 83.4 − 35.0 = 48.4 百分点  \n  2) MPT-30B-Instruct: 81.9 − 31.5 = 50.4 百分点  \n  3) GPT-3.5-Turbo: 88.3 − 56.1 = 32.2 百分点  \n  4) GPT-3.5-Turbo (16K): 88.6 − 56.0 = 32.6 百分点  \n  5) Claude-1.3: 76.1 − 48.3 = 27.8 百分点  \n  6) Claude-1.3 (100K): 76.4 − 48.2 = 28.2 百分点\n说明：百分比与百分点不同；此处明确用“百分点”表示差值，基准为表中给出的 closed-book 精度。保留表格原始四舍五入精度（表中以一位小数给出）。",
+      "evidence": [
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 40,
+          "end_line": 46
+        },
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 47,
+          "end_line": 49
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 68,
+          "end_line": 76
+        }
+      ],
+      "limitations": "表中数值为作者报告的“准确率（%）”，基于所述受控多文档 QA 实验（2655 条段落型查询子集）。我仅做简单差值计算，不对统计显著性、样本大小内变异或置信区间做额外估计；表格未在所给页展示方差或置信区间信息，故不能据此断言差异是否统计显著。"
+    },
+    {
+      "id": "D3",
+      "answer": "为何上述（Oracle − Closed-Book）差值不能被称为“线上检索器（online retriever）收益”、因果分解或所有系统的上界（区分定义、作者观测与推论）：\n- 定义/事实（作者表述）：oracle 设置是“给予单个包含答案的文档”并要求模型使用它；closed-book 则是“不给任何文档”；这两个设置都是人为构造的输入条件，而非检索器在实际检索流水线中返回的 top-k 列表。  \n- 观测（作者实验与讨论）：作者在开放域检索情形下指出，检索得到的前 k 个文档中“可能没有也可能有多个包含答案”，并且在 Wikipedia+NaturalQuestions-Open 的实验中，随着检索器返回更多文档，检索召回会增加但模型性能很快饱和（表现随额外检索文档的提升有限）。  \n- 推论/原因说明（我的结论）：因此表中 Oracle 对 Closed-Book 的增益仅度量“在模型已被直接给到正确文档时模型能否利用该单份文档”的能力，而不是检索器在真实流水线中把正确文档带回上来后的“线上收益”。它也不是对系统间的普适上界，因为 oracle 假设检索步骤已经完美地提供了正确文档——真实检索器会发生遗漏和多答案情形，使得该差值并不等于任何具体检索器在端到端系统中的实际提升。此外，差值不能被简单解读为因果分解（如把系统误差完全归因于检索或阅读），因为还有位置效应、干扰文档数量、模型在中间位置检索困难等混杂因素影响最终性能。  ",
+      "evidence": [
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 61,
+          "end_line": 63
+        },
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 56,
+          "end_line": 60
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 19,
+          "end_line": 23
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 26,
+          "end_line": 32
+        },
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 64,
+          "end_line": 71
+        }
+      ],
+      "limitations": "结论严格限定于文中关于 closed-book、oracle 定义及作者在检索与使用更多文档时观察到的性能饱和与位置效应。文献未提供完整的端到端检索器输出分布或因果鉴别实验，故不能以此证明在所有检索器/数据集上的通用结论。"
+    },
+    {
+      "id": "D4",
+      "answer": "结合 §2.3（位置敏感与文档可能降低性能的现象）说明，并澄清“不要把 Oracle 误称为某种 ALCE top100→选5 的检索后选择算法”：\n- 作者观测（文本陈述）：模型在多文档上下文中表现出“U 型”位置敏感，相关信息在上下文开始或结尾时性能最好，而位于中间时性能快速下降；作者举例说明 GPT-3.5-Turbo 在某些 20 或 30 文档设置中的最差情况，其性能低于不包含任何文档的 closed-book（示例中引用 closed-book = 56.1%），即加入文档有时会降低性能超过 20%。  \n- 含义（我的解释）：这说明即使“有文档”存在（包括包含答案的文档），模型也可能因为位置、干扰文档或推理难度而落得比 closed-book 更差；因此在评估检索器或下游系统时，仅凭“存在正确文档”并不能保证性能提升。  \n- 关于“不要把 Oracle 误称为 ALCE top100 选5 的算法”：文中对 oracle 的定义是直接把唯一包含答案的文档交给模型——它不是描述某种从大量候选（如 top100）中选择若干的检索后筛选算法；并且作者在别处强调开放域检索时前 k 文档中“可能没有或许多”答案的现实差异，说明 oracle 与实际检索器返回的多文档集合在语义与统计假设上不同，因此不能等同于某个具体的后处理或选取算法。  ",
+      "evidence": [
+        {
+          "source_id": "B-P6 physical PDF page 6",
+          "start_line": 9,
+          "end_line": 16
+        },
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 64,
+          "end_line": 70
+        },
+        {
+          "source_id": "B-P5 physical PDF page 5",
+          "start_line": 61,
+          "end_line": 63
+        },
+        {
+          "source_id": "B-P3 physical PDF page 3",
+          "start_line": 19,
+          "end_line": 23
+        }
+      ],
+      "limitations": "不能在所提供页中找到关于 ALCE 或“top100 选5”这一特定算法的任何描述或比较；因此只能根据文中对 oracle 的定义和作者关于开放域检索与位置效应的讨论来说明二者不同。文中未提供端到端检索器+后处理算法的实验对比，故不能就特定后处理算法的效果做直接判断。"
+    }
+  ]
+}

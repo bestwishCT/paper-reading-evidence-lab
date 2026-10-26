@@ -1,0 +1,2 @@
+D1区分closed-book、single-document Oracle与受控多文档QA三种设置；D2抄出Table1六模型两列并计算各模型Oracle减closed-book的百分点差；D3解释为什么差值不能称线上retriever收益、因果分解或所有系统上界；D4结合§2.3说明有文档仍可能低于closed-book及位置条件，不把Oracle误称ALCE top100选5的算法。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。

@@ -1,0 +1,1 @@
+2026-10-26。先baseline后workflow各一次、同task与来源、同gpt-5-mini/photon、无历史工具、各180秒。唯一有意处理差异是workflow增加通用核查流程；两组均收到相同JSON要求，workflow没有gold/额外论文证据。提示长度不同属处理的一部分，服务snapshot/seed/temperature不可锁定。没有随机化、重复seed或盲审，设计者熟悉论文，不能从单对推出稳定收益、显著性或成本优势。criteria不发送模型。全部尝试保留，不事后挑答案。

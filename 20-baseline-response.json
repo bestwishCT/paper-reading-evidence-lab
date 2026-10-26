@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"区分三种设置：closed-book 指模型在输入中不被提供任何文档、仅靠参数记忆回答问题；oracle 指把那条确实包含答案的单一文档直接放入模型上下文，模型需利用该文档答题；受控多文档QA 是作者构造的实验范式：上下文包含 k 个文档且恰好有一个文档含答案，其余为检索到的“干扰”文档，任务考察模型在含噪上下文中定位并利用那条含答案的文档。此三者在实验目的与给予模型的信息量上有本质不同，closed-book 测试参数记忆、oracle 测试在给定正确证据时的利用能力、受控多文档QA 测试在杂乱文档序列中检索和推理的鲁棒性。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P5\",\n          \"start_line\": 57,\n          \"end_line\": 63\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 51,\n          \"end_line\": 63\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 59,\n          \"end_line\": 66\n        }\n      ],\n      \"limitations\": \"结论严格基于给定片段的定义性描述；若完整论文对这些设置在实现细节（比如提示模板或评价判定准则）有更多规定，本文未被引用，可能遗漏细节。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"从表中列出六个模型的 closed-book 与 oracle 准确率，并计算 oracle 相对于 closed-book 的百分点差：LongChat-13B (16K)：closed-book 35.0%，oracle 83.4%，差 +48.4 个百分点；MPT-30B-Instruct：31.5% → 81.9%，差 +50.4 个百分点；GPT-3.5-Turbo：56.1% → 88.3%，差 +32.2 个百分点；GPT-3.5-Turbo (16K)：56.0% → 88.6%，差 +32.6 个百分点；Claude-1.3：48.3% → 76.1%，差 +27.8 个百分点；Claude-1.3 (100K)：48.2% → 76.4%，差 +28.2 个百分点。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P5\",\n          \"start_line\": 40,\n          \"end_line\": 46\n        },\n        {\n          \"source_id\": \"B-P5\",\n          \"start_line\": 47,\n          \"end_line\": 49\n        }\n      ],\n      \"limitations\": \"我仅据表中提供的百分比直接算差值；如果表格在原文中有四舍五入或额外的小数位，这里计算的百分点可能有轻微四舍五入误差。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"表中 oracle 准确率减去 closed-book 的差值不能被直接等同于线上检索器（retriever）的收益、也不能当作因果分解项或所有系统的性能上界，理由有三：首先 oracle 是把那条含答案的文档“直接给予”模型的理想化设置，和现实检索器返回 top-k 文档的过程不同，现实检索可能返回零条、一道或多条含答案的文档，检索质量与排序行为会影响最终系统性能；其次 文中指出在开放域检索中系统表现早已在检索召回饱和之前趋于饱和，说明把更多检索到的文档端到端送入模型不等同于 oracle 带来的提升，因果上不能把两者简单相加或解构为检索器贡献；最后 oracle 反映“在给定正确证据时模型能否利用该证据”的上限样本，但不同系统在上下文利用能力、位置敏感性与解码策略上差异显著，因此该差值并非对所有系统的绝对上界或统一的因果分解项。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P5\",\n          \"start_line\": 61,\n          \"end_line\": 63\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 19,\n          \"end_line\": 23\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 26,\n          \"end_line\": 32\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 9,\n          \"end_line\": 16\n        }\n      ],\n      \"limitations\": \"推理严格基于所给片段；若原文在其他部分对因果分解、检索器评估或上界定义作更精确的讨论，本文未被引用，可能缺失补充论证。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"结合第 2.3 节可知，即便输入上下文确实包含文档，模型在多文档情景下也可能表现低于 closed-book，关键原因包括位置敏感性与中间信息难以检索：作者观察到性能呈明显的 U 形——当含答案的文档位于开头或结尾时效果最佳，但位于中间时性能显著下降，实例中某些设置下总体准确率甚至低于不提供任何文档的 closed-book 基线。因此不应把 oracle 误认为是一种像“ALCE top100 选5”那样的检索算法；oracle 是实验条件下直接提供正确文档的设定，而 ALCE 类的方法描述的是从 top-N 检索候选中选取若干候选的检索/重排序算法，两者在输入来源与评价语义上不同，混淆会导致对检索器实用收益与模型利用能力的误判。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P5\",\n          \"start_line\": 1,\n          \"end_line\": 4\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 9,\n          \"end_line\": 16\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 21,\n          \"end_line\": 23\n        },\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 86,\n          \"end_line\": 90\n        }\n      ],\n      \"limitations\": \"文中未出现对 ALCE top100 选5 的直接讨论；关于 ALCE 的性质与实现细节我只能基于一般检索/重排序方法与文中关于 oracle 与检索器差异的描述来说明二者不可混淆。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792993691,
+    "id": "chatcmpl-Ed7r1JY4ZMzyuKOgJgl3H7a8ME1vU",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261022033803-9c327643-default-r2-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 3005,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1408,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 88,
+        "engine_ttlt_ms": 19873,
+        "pre_inference_ms": 100,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 309,
+        "service_ttlt_ms": 20086,
+        "user_visible_ttft_ms": 209
+      },
+      "prompt_tokens": 3282,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 6287
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "4c0e3acb-3cd6-4eb3-9b8d-9b707f99d363",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 22022,
+    "timestamp": 1792993712
+  }
+}

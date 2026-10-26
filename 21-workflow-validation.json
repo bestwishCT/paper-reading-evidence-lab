@@ -1,0 +1,17 @@
+{
+  "status": "range_errors",
+  "errors": [
+    "D1:invalid_range",
+    "D1:invalid_range",
+    "D2:invalid_range",
+    "D3:invalid_range",
+    "D3:invalid_range",
+    "D3:invalid_range",
+    "D4:invalid_range",
+    "D4:invalid_range",
+    "D4:invalid_range",
+    "D4:invalid_range"
+  ],
+  "semantic": "not_evaluated",
+  "excerpts": []
+}

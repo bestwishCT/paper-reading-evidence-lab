@@ -1,0 +1,249 @@
+独立记录号 77832dac-f6c5-4f57-a23e-c7f910354698（不含任务语义）
+D1区分closed-book、single-document Oracle与受控多文档QA三种设置；D2抄出Table1六模型两列并计算各模型Oracle减closed-book的百分点差；D3解释为什么差值不能称线上retriever收益、因果分解或所有系统上界；D4结合§2.3说明有文档仍可能低于closed-book及位置条件，不把Oracle误称ALCE top100选5的算法。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。
+SOURCE B-P3 physical PDF page 3
+1: key-value pairs) enables near-perfect perfor-
+2: mance on the synthetic key-value task, but
+3: minimally changes trends in multi-document
+4: QA (§4.2).
+5: •Even base language models (i.e., without
+6: instruction fine-tuning) show a U-shaped per-
+7: formance curve as we vary the position of
+8: relevant information in the input context.
+9: Our results indicate that prompting lan-
+10: guage models with longer input contexts is a
+11: trade-off—providing the language model with
+12: more information may help it perform the down-
+13: stream task, but it also increases the amount
+14: of content that the model must reason over,
+15: potentially decreasing accuracy. To better un-
+16: derstand this trade-off in practice, we perform
+17: a case study with retriever-reader models on
+18: open-domain question answering ( §5). In con-
+19: trast to our controlled multi-document QA task,
+20: where the context always contains exactly one
+21: document that answers the question, none or
+22: many of the top k documents may contain the
+23: answer in the open-domain QA setting. When
+24: retrieving from Wikipedia to answer queries
+25: from NaturalQuestions-Open, we find that model
+26: performance saturates long before retriever re-
+27: call saturates, indicating that current models
+28: fail to effectively use additional retrieved doc-
+29: uments—using 50 documents instead of 20
+30: retrieved documents only marginally improves
+31: performance ( ∼1.5% for GPT-3.5-Turbo and
+32: ∼1% for claude-1.3).
+33: Our analysis provides a better understanding
+34: of how language models use their input context
+35: and introduces new evaluation protocols for fu-
+36: ture long-context models; to claim that a language
+37: model can robustly use information within long
+38: input contexts, it is necessary to show that its
+39: performance is minimally affected by the position
+40: of the relevant information in the input context
+41: (e.g., minimal difference in best- and worst-case
+42: performance). To facilitate further work on un-
+43: derstanding and improving how language models
+44: use their input context, we release our code and
+45: evaluation data.
+46: 1
+47: 2 Multi-Document Question Answering
+48: Our goal is to better understand how language
+49: models use their input context. To this end, we
+50: 1nelsonliu.me/papers/lost-in-the-middle.
+51: analyze model performance on multi-document
+52: question answering, which requires models to find
+53: relevant information within an input context and
+54: use it to answer the question. In particular, we
+55: make controlled changes to the length of the input
+56: context and the position of the relevant informa-
+57: tion and measure changes in task performance.
+58: 2.1 Experimental Setup
+59: In the multi-document question answering task,
+60: the model inputs are (i) a question to answer and
+61: (ii) k documents (e.g., passages from Wikipedia),
+62: where exactly one of the documents contains the
+63: answer to the question and k −1 ‘‘distractor’’
+64: documents do not. This task requires the model
+65: to access the document that contains the answer
+66: within its input context and use it to answer the
+67: question. Figure 2 presents an example.
+68: We instantiate this task with data from
+69: NaturalQuestions-Open (Lee et al., 2019;
+70: Kwiatkowski et al., 2019), which contains
+71: historical queries issued to the Google search
+72: engine, coupled with human-annotated answers
+73: extracted from Wikipedia. In particular, we take
+74: the 2655 queries where the annotated long answer
+75: is a paragraph (as opposed to a list or a table).
+76: We use passages (chunks of at most 100 tokens)
+77: from Wikipedia as documents within our input
+78: contexts. For each of the queries, we need a
+79: document that contains the answer and
+80: k −1
+81: distractor documents that do not contain the
+82: answer. To obtain a document that answers the
+83: question, we use the Wikipedia paragraph that
+84: contains the answer from the NaturalQuestions
+85: annotations.
+86: To collect k −1 distractor documents that do
+87: not contain the answer, we use a retrieval system
+88: (Contriever, fine-tuned on MS-MARCO; Izacard
+89: et al., 2021) to retrieve the k−1 Wikipedia chunks
+90: that are most relevant to the query and do not
+91: contain any of the NaturalQuestions-annotated
+92: answers.
+93: 2,3 In the input context, the distractor
+94: 2Ambiguity in NaturalQuestions-Open means that a small
+95: number of distractor passages may contain a reasonable
+96: answer. We additionally run experiments on subset of unam-
+97: biguous questions, finding similar results and conclusions;
+98: see Appendix A.
+99: 3We also explored using random documents as distractors,
+100: see Appendix B for more details.
+101: 159
+
+SOURCE B-P5 physical PDF page 5
+1: Figure 5: The effect of changing the position of relevant information (document containing the answer) on
+2: multi-document question answering performance. Lower positions are closer to the start of the input context.
+3: Performance is highest when relevant information occurs at the very start or end of the context, and rapidly
+4: degrades when models must reason over information in the middle of their input context.
+5: when generating outputs and leave exploration of
+6: other decoding methods to future work. We use a
+7: standard set of prompts for each model (Figure 2).
+8: Open Models. We experiment with MPT-
+9: 30B-Instruct, which has a maximum context
+10: length of 8192 tokens. The model was ini-
+11: tially pre-trained on 1 trillion tokens using
+12: 2048-token sequences, followed by an additional
+13: sequence length adaptation pre-training phase on
+14: 50 billion tokens using 8192-token sequences.
+15: MPT-30B-Instruct uses ALiBi (Press et al., 2022)
+16: to represent positional information. We also eval-
+17: uate LongChat-13B (16K) (Li et al., 2023), which
+18: extends the LLaMA-13B (Touvron et al., 2023a)
+19: context window from 2048 to 16384 tokens by
+20: using condensed rotary positional embeddings
+21: before fine-tuning with 16384-token sequences.
+22: Closed Models. We use the OpenAI API to
+23: experiment with GPT-3.5-Turbo and GPT-3.5-
+24: Turbo (16K). 5 GPT-3.5-Turbo has a maximum
+25: context length of 4K tokens, and GPT-3.5-Turbo
+26: (16K) is a version with an extended maximum con-
+27: text length of 16K tokens. We evaluate Claude-1.3
+28: and Claude-1.3 (100K) with the Anthropic API;
+29: Claude-1.3 has a maximum context length of 8K
+30: tokens, and Claude-1.3 (100K) has an extended
+31: context length of 100K tokens.
+32: 6
+33: 5We use the 0613 OpenAI model versions.
+34: 6We also evaluate GPT-4 (8K) on a subset of
+35: multi-document QA experiments, finding similar results and
+36: trends as other models (though GPT-4 has higher absolute
+37: performance). Evaluating GPT-4 on the full multi-document
+38: QA and key-value retrieval experiments would cost upwards
+39: of $6000. See Appendix D for GPT-4 results and discussion.
+40: Model Closed-Book Oracle
+41: LongChat-13B (16K) 35.0% 83.4%
+42: MPT-30B-Instruct 31.5% 81.9%
+43: GPT-3.5-Turbo 56.1% 88.3%
+44: GPT-3.5-Turbo (16K) 56.0% 88.6%
+45: Claude-1.3 48.3% 76.1%
+46: Claude-1.3 (100K) 48.2% 76.4%
+47: Table 1: Closed-book and oracle accuracy of
+48: language models on the multi-document question
+49: answering task.
+50: 2.3 Results and Discussion
+51: We experiment with input contexts containing 10,
+52: 20, and 30 total documents. Figure 5 presents
+53: multi-document question answering performance
+54: when varying the position of relevant information
+55: within the input context. To contextualize model
+56: performance, we also evaluate on the closed-book
+57: and oracle settings (Table 1). In the closed-book
+58: setting, models are not given any documents in
+59: their input context, and must rely on their paramet-
+60: ric memory to generate the correct answer. On the
+61: other hand, in the oracle setting, language models
+62: are given the single document that contains the
+63: answer and must use it to answer the question.
+64: Model performance is highest when relevant
+65: information occurs at the beginning or end of
+66: its input context. As illustrated in Figure 5,
+67: changing the position of relevant information in
+68: the input context leads to substantial decreases
+69: in model performance. In particular, we see a
+70: distinctive U-shaped performance curve—models
+71: 161
+
+SOURCE B-P6 physical PDF page 6
+1: Figure 6: Example of the key-value retrieval task, with an input context and the desired model output. Given a
+2: key, the goal is to return the associated value. All keys and values are 128-bit UUIDs. The relevant key-value pair
+3: for answering the query is bolded here within the input context for clarity.
+4: are often much better at using relevant information
+5: that occurs at the very beginning (primacy bias)
+6: and very end of contexts (recency bias), and suffer
+7: degraded performance when forced to use infor-
+8: mation within the middle of its input context. For
+9: example, GPT-3.5-Turbo’s multi-document QA
+10: performance can drop by more than 20%—in the
+11: worst case, performance in 20- and 30-document
+12: settings is lower than performance without any
+13: input documents (i.e., closed-book performance;
+14: 56.1%). These results indicate that current models
+15: cannot effectively reason over their entire context
+16: window when prompted for downstream tasks.
+17: Extended-context models are not necessarily
+18: better at using input context. When the input
+19: context fits in the context window of both a model
+20: and its extended-context counterpart, we see that
+21: performance between them is nearly identical. For
+22: example, the 10- and 20-document settings both
+23: fit in the context window of GPT-3.5-Turbo and
+24: GPT-3.5-Turbo (16K), and we observe that their
+25: performance as a function of position of relative
+26: information is nearly superimposed (solid purple
+27: and dashed brown series in Figure 5). These re-
+28: sults indicate that extended-context models are
+29: not necessarily better than their non-extended
+30: counterparts at using their input context.
+31: 3 How Well Can Language Models
+32: Retrieve From Input Contexts?
+33: Given that language models struggle to retrieve
+34: and use information from the middle of their input
+35: contexts in the multi-document question answer-
+36: ing task, to what extent can they simply retrieve
+37: from input contexts? We study this question with
+38: a synthetic key-value retrieval task, which is de-
+39: signed to provide a minimal testbed for the basic
+40: ability to retrieve matching tokens from an input
+41: context.
+42: 3.1 Experimental Setup
+43: In our synthetic key-value retrieval task, the inputs
+44: are (i) a string-serialized JSON object with k
+45: key-value pairs, where each of the keys and values
+46: are unique, randomly generated UUIDs and (ii) a
+47: key within the aforementioned JSON object. The
+48: goal is to return the value associated with the
+49: specified key. Thus, each JSON object contains
+50: one relevant key-value pair (where the value is
+51: to be returned), and
+52: k −1 irrelevant ‘‘distractor’’
+53: key-value pairs. Figure 6 provides an example
+54: input context and its corresponding desired output.
+55: We again measure accuracy by evaluating whether
+56: the correct value appears in the predicted output.
+57: Our synthetic key-value retrieval task shares
+58: similar goals with the Little Retrieval Test of
+59: Papailiopoulos et al. (2023) and the fine-grained
+60: line retrieval task of Li et al. (2023), but we ex-
+61: plicitly seek to distill and simplify the task by
+62: removing as much natural language semantics as
+63: possible (using random UUIDs instead), since lan-
+64: guage features may present potential confounders.
+65: For example, Transformer language models may
+66: have varying sensitivity to different linguistic
+67: features in their input (O’Connor and Andreas,
+68: 2021).
+69: 162

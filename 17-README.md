@@ -26,6 +26,16 @@ baseline D1/D2恢复示例和分母，D3拒绝直接相乘，D4方向正确；�
 
 ![必要原页，关键内容已在正文转写](17-source-page.png)
 
+## 观察失败后：一次单独冻结的ID修复验证
+
+上述两组完成后，发现“逐字复制SOURCE标题”诱发ID过长。随后另存[修复协议与冻结哈希](17-repair-protocol.json)及[修复提示](17-repair-workflow.txt)，保留同一task和编号原文，改成显式允许ID列表与一个字段示例；这是**事后干预的一次新调用**，不属于原先的公平两组对照，也未覆盖其它四篇或多个seed。
+
+实际模型chenkun/gpt-5-mini，输入3305、输出4133 tokens，含预检墙钟32.334秒。完整repair-request/preflight/response/output/metadata/stderr均保留。严格结果`ranges_valid`，11段合法定位；本次成功只说明这个例子的ID契约恢复，不证明科学解读更好或修复普遍稳定。
+
+修复原答D1/D2仍能解释3示范与两个分母，D4方向正确；D3依然把NLI“判对”与“正确判为蕴含”混合，D2称两项“独立”也只能理解为分别报告的评估，不能推成统计独立。D4关于80%的主张缺49–60对应证据（它引67–76的NLI训练资料），语义支持仍要人工回查。本例说明**格式修复与科学修复是两道验收**。D1仍说论文没给完整示例集，须限定为本次页未包含Table22。
+
+复做该事后修复：`python 17-replay.py --bohr /absolute/path/to/bohr --condition repair --out fresh-repair`；本次冻结锁仍指最初六文件，修复锁另列，绝不回写原来的workflow。
+
 ## 方法为什么这样设计
 
 先为D1–D4写[任务](17-task.txt)与不发给模型的[标准](17-criteria.md)，核对必要页，再以[冻结哈希](17-protocol-lock.json)锁定六个文件。baseline只收任务与编号原文；workflow增加[通用核查流程](17-workflow.txt)，其余材料、问题、JSON要求、模型权限、180秒超时相同。按[协议](17-protocol.md)固定先baseline后workflow，不挑样本、不删失败。行号使每个断言可回查，但验证器只判断范围，不判断蕴含、单位或跨页限定，所以正文另作非盲语义审计。
@@ -37,7 +47,7 @@ baseline D1/D2恢复示例和分母，D3拒绝直接相乘，D4方向正确；�
 |baseline|chenkun/gpt-5-mini|24.348|3196|3369|ranges_valid|
 |workflow|chenkun/gpt-5-mini|33.419|3322|4263|range_errors|
 
-原始completion ID、模型与usage见各metadata。工具Bohrium原生CLI2.8.1，gpt-5-mini请求、photon；实际模型如表。服务没有逐次货币扣费，cost=null，不等于免费。全部10个调用中本篇仅包含自己的两次记录；其它题不进入本材料包。
+原始completion ID、模型与usage见各metadata。工具Bohrium原生CLI2.8.1，gpt-5-mini请求、photon；实际模型如表。服务没有逐次货币扣费，cost=null，不等于免费。原配对研究共10个调用，本篇另有1次事后修复，共包含自己的3次记录；其它题不进入本材料包。
 
 ## 复做：先离线检查，再选是否调用模型
 
@@ -60,7 +70,7 @@ python 17-replay.py --bohr /absolute/path/to/bohr --condition workflow --out fre
 
 脚本先dry-run逐字核对message，真实调用保留请求/原答/响应/usage/stderr，不覆盖已有out。非语义UUID不同，结果不保证相同。Windows用原生exe避免.cmd多行截断，命令行不得超系统长度；只从子进程移除代理变量，不改系统配置。source_id失败应先被拒绝，不能静默把整段标题映射回ID冒充原答成功。
 
-后续拟修复方式：提示显式列出允许ID并提供字段示例，要求只输出ID值；解析器拒绝标题、页码后缀和未知ID。此方式**本篇尚未追加调用验证**；保存workflow保持原样，以便别人复核本次实际失败。
+后续拟修复方式：提示显式列出允许ID并提供字段示例，要求只输出ID值；解析器拒绝标题、页码后缀和未知ID。该方式仅在上方一次事后修复调用中验证了ID格式，语义缺口仍在；保存原workflow与原答保持原样。
 
 ## 文件导航
 

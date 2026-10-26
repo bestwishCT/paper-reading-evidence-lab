@@ -1,12 +1,12 @@
 """Fresh request; writes new evidence and never edits saved responses."""
 import argparse,subprocess,os,json,uuid,time
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('--bohr',required=True);p.add_argument('--condition',choices=['baseline','workflow'],required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--bohr',required=True);p.add_argument('--condition',choices=['baseline','workflow','repair'],required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
 R=Path(__file__).resolve().parent
 PREFIX='17-'
 if a.out.exists():raise SystemExit('Use new out directory')
 a.out.mkdir(parents=True)
-prompt='独立记录号 '+str(uuid.uuid4())+'（不含任务语义）\n'+((R/(PREFIX+'workflow.txt')).read_text(encoding='utf8')+'\n' if a.condition=='workflow' else '')+(R/(PREFIX+'task.txt')).read_text(encoding='utf8')+'\n'+(R/(PREFIX+'numbered.txt')).read_text(encoding='utf8')
+prompt='独立记录号 '+str(uuid.uuid4())+'（不含任务语义）\n'+((R/(PREFIX+('repair-workflow.txt' if a.condition=='repair' else 'workflow.txt'))).read_text(encoding='utf8')+'\n' if a.condition in ['workflow','repair'] else '')+(R/(PREFIX+'task.txt')).read_text(encoding='utf8')+'\n'+(R/(PREFIX+'numbered.txt')).read_text(encoding='utf8')
 (a.out/'request.txt').write_text(prompt,encoding='utf8');env=os.environ.copy()
 for k in ['HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','http_proxy','https_proxy','all_proxy']:env.pop(k,None)
 cmd=[a.bohr,'chat',prompt,'--model','gpt-5-mini','--payment-source','photon','--output','json'];started=time.monotonic()

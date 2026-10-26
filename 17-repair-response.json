@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"根据附录描述，生成 ELI5 子断言（sub-claims）时，作者以 text-davinci-003 为生成模型；用于示范（few-shot prompt）的人工标注示例为 3 个问答对，每个示例包含 3 条子断言（即 3 个示范问答 × 每例 3 条 claim）；作者还报告对一个随机样本的人工复检：抽检 40 个答案，其对应生成的子断言总数为 120 条（用于后续质量估计）。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 26,\n          \"end_line\": 33\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 36,\n          \"end_line\": 41\n        }\n      ],\n      \"limitations\": \"以上结论严格基于文中陈述：三条示范问答/三条子断言和使用 text-davinci-003 是文中明确说明的设计；文中未给出用于 prompt 的完整示例集或其他不同 prompt 配置的数量，无法推断是否还用了额外示范或数据增强。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"文中两个比值分别针对不同对象：112/120（93.33%）是对生成的 120 条子断言的人工质量标注，其中分母为 120（来自对 40 个答案的抽样），人工标准为“与问题相关且对原始答案所示事实忠实”（二值打分，1 表示合格）；因此失败数为 120−112＝8 条。80.0% 是 NLI（TRUE）模型在同一批 120 个“输出与子断言”对上的预测准确率（以人工标注的蕴含标签为真值），分母同样为 120，表示 NLI 模型把相应蕴含关系判对的比例。以上两项分别报告了子断言生成质量与 NLI 判别准确性，不能直接当作端到端回答正确率。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 36,\n          \"end_line\": 43\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 49,\n          \"end_line\": 60\n        }\n      ],\n      \"limitations\": \"文中明示这两项是独立的质量/模型评估：112/120 描述生成子断言的人工评测，而 80.0% 描述 NLI 模型与人工标注的匹配率。文中未给出把人工子断言质量与 NLI 预测在逐条层面联结的详细联合计数（例如哪些子断言既被人工判为合格又被 NLI 正确判为蕴含），因此不能从文中现有数字直接推出其他复合指标。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"不能简单地将 93.33%（112/120）与 80.0% 相乘以得到端到端“可靠率”，除非对两项评估之间的独立性与对等意义有严格保证。若仅相乘得出一个数值，其意义是假设“每条子断言既合格又被 NLI 正确判为蕴含”的联合概率等于两者独立概率的乘积；这在缺乏逐条联合统计的情况下不成立。要给出可信的端到端可靠率，需要逐条的联合标签或混淆矩阵，例如对每一条子断言同时记录：人工对子断言的合格/不合格标注、人工对输出→子断言蕴含的标注、以及 NLI 的预测结果；从这些逐条记录可以直接计算“被生成、且事实忠实、且 NLI 正确识别”为真的比例（或报告精确的真阳性/假阴性等）。（作为说明，若强行相乘：0.9333×0.80≈0.7466，但此值在文中未被证明为有效的端到端指标。）\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 36,\n          \"end_line\": 43\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 49,\n          \"end_line\": 60\n        },\n        {\n          \"source_id\": \"A-P4\",\n          \"start_line\": 44,\n          \"end_line\": 51\n        }\n      ],\n      \"limitations\": \"文中没有公布逐条的联合统计或混淆矩阵，因此无法验证独立性假设或计算精确的端到端可靠率；文中也未说明是否对 NLI 判错类型（假阳性/假阴性）作了额外分析，这些都会影响端到端解释。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"根据正文，claim recall 的 NLI 方向是用 TRUE 判断“模型输出是否蕴含（entails）子断言”，即把模型生成作为前提、子断言作为假设来做蕴含检测（输出⇒子断言）。仅生成 3 条子断言意味着评价仅覆盖回答中被 3 条合成子断言表述到的方面；作者用这三条子断言估计答案的不同方面，但三条合成断言本身受示范 prompt（仅用 3 个人工示例）和生成器偏差的限制，因此可能漏报其它事实性要点。验证上的局限还包括：生成子断言的人工审查只基于 40 个样本（120 条子断言），以及用于判定蕴含的 TRUE 模型在该样本上的准确率为 80%，而该 NLI 模型是用若干公开 NLI/事实验证数据集微调的（可能存在领域差异），因此 claim recall 同时受子断言覆盖度与 NLI 判别错误率的双重限制，应谨慎解读为对答案总体正确性的完整证明。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P4\",\n          \"start_line\": 45,\n          \"end_line\": 51\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 26,\n          \"end_line\": 33\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 36,\n          \"end_line\": 43\n        },\n        {\n          \"source_id\": \"A-P14\",\n          \"start_line\": 67,\n          \"end_line\": 76\n        }\n      ],\n      \"limitations\": \"结论基于文中关于生成、人工抽检与 NLI 模型训练/性能的描述；文中未提供完整的子断言覆盖率评估或针对不同类型事实错误的详细 NLI 误判分析，因此无法就 claim recall 的召回上限或对具体错误模式作更精细的量化。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792994277,
+    "id": "chatcmpl-Ed80TVIvINCcj5DUDc3muAxOzN7Z3",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261022102114-8e6629f3-default-r2-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 4133,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 2496,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 83,
+        "engine_ttlt_ms": 28705,
+        "pre_inference_ms": 215,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 870,
+        "service_ttlt_ms": 29724,
+        "user_visible_ttft_ms": 655
+      },
+      "prompt_tokens": 3305,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 7438
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "b29d036a-d619-4187-87dc-87a149a57e0b",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 31985,
+    "timestamp": 1792994308
+  }
+}

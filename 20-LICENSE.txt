@@ -1,0 +1,6 @@
+MIT License
+Copyright (c) 2026 bestwishCT
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of the original text and software in this work to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies, subject to including this notice and permission notice in copies or substantial portions.
+THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR USE OF THE SOFTWARE.
+Third-party paper excerpts and figures remain CC-BY4.0, attributed in SOURCES.md.

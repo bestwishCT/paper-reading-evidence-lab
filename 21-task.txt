@@ -1,0 +1,2 @@
+D1恢复Table15设置、两行四列，算Full减Short四项差值，区分MAUVE分和百分点；D2比较Tables23/24实际指令新增的要求，区分短指令已有要求与新增要求；D3判断表中能否证明所有指标提高、越长越好或某一句措辞导致收益，区分整包改动与单因素消融；D4结合主实验三seed约定解释均值、方差与显著性，指出prompt要求最小充分引用集不等于评价器严格惩罚所有冗余。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。

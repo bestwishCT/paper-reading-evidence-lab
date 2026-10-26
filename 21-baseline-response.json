@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"Table 15 为两行四列，行是“Short instruction”与“Full instruction”，列分别是流畅度(MAUVE)、正确性(EM Recall)、引证召回(Citation Rec.)与引证精度(Citation Prec.)。表中数值为：Short = [MAUVE 64.1, Correct. 39.5, Rec. 69.6, Prec. 73.2]；Full = [MAUVE 66.6, Correct. 40.4, Rec. 73.6, Prec. 72.5]。因此 Full − Short 的差值为：MAUVE +2.5（MAUVE 分数点），正确性 +0.9 百分点，引证召回 +4.0 百分点，引证精度 −0.7 百分点。需要区分：MAUVE 是流畅性指标的分数（非百分点），其余三项按表格以百分比/百分点呈现。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P16\",\n          \"start_line\": 47,\n          \"end_line\": 52\n        },\n        {\n          \"source_id\": \"A-P16\",\n          \"start_line\": 38,\n          \"end_line\": 42\n        }\n      ],\n      \"limitations\": \"数值来源仅限表中给出的平均值；表中未在主文给出对应的标准差或置信区间（这些在附录中），因此对微小差值的统计显著性在本项中未判断。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"短指令 (Table 24) 仅包含简短要求：使用给定检索结果并用类似 [1][2][3] 的方式正确引用。完整版指令 (Table 23) 在此基础上新增或明确了多项要求：要求回答“准确、吸引且简洁”；仅使用提供的检索结果；采用客观/新闻式语气；对任何事实性陈述必须引用；在每句中引用至少 1 个且最多 3 个文档；当多文档支持同一句时应只引用“最小充分子集”。因此短指令保留了“用检索结果并引用”的核心，而完整版在风格、引用粒度（每句 1–3 篇）和“最小充分子集”策略上引入了额外约束。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P21\",\n          \"start_line\": 44,\n          \"end_line\": 49\n        },\n        {\n          \"source_id\": \"A-P21\",\n          \"start_line\": 50,\n          \"end_line\": 53\n        }\n      ],\n      \"limitations\": \"仅基于给出的两段指令文本比较，未能访问可能存在的完整提示上下文或示例（附带示例/演示可能影响模型行为）。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"表中并不能证明“所有指标均提高”或能归因于某一句特定措辞。事实依据：表格显示引证召回和流畅度、正确性有上升，但引证精度略降（−0.7）。提示从短到长是个‘整包’改动（完整版包含多项新增要求），因此观测到的变化只能归因于整体提示差异，不能证明某一条新增措辞单独导致收益。此外，论文没有在主文中提供对单个约束逐项消融或逐句替换的对照实验来做单因素归因，故无法从表中断言“越长越好”或将效果归因到单一句子。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P16\",\n          \"start_line\": 47,\n          \"end_line\": 52\n        },\n        {\n          \"source_id\": \"A-P21\",\n          \"start_line\": 44,\n          \"end_line\": 49\n        },\n        {\n          \"source_id\": \"A-P15\",\n          \"start_line\": 12,\n          \"end_line\": 18\n        }\n      ],\n      \"limitations\": \"结论限制于文中公开的实验对比；如果存在作者在附录或未提供段落中的逐项消融实验，则本判断无法涵盖。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"实验采用主实验约定：对除 ChatGPT RERANK 外的实验每个模型用三个不同随机种子重复三次、并对每次从四个演示中采样两个示例；主文报告的是三个重复的平均值，标准差列在附录（G.6）。因此表中给出的均值需结合标准差/置信区间来判断显著性，但文中主段未给出这些具体方差或 p 值，故在仅凭主文均值的情况下无法断定差异是否统计显著。另需指出：完整版指令要求“当多源支持时只引用最小充分子集”（提示层面的严格要求），但评估指标的设计并不强制模型必须只引用最小集合——论文明确说明其引证精度评估并不要求引用“最小集合”，这是刻意的设计选择以容纳人类常见的冗余引用。因此提示中要求的“最小充分引用集”比评价器的容忍策略更严格，两者不等同，提示的严格ness 不会被评估器完全强制惩罚冗余引用。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P15\",\n          \"start_line\": 12,\n          \"end_line\": 18\n        },\n        {\n          \"source_id\": \"A-P4\",\n          \"start_line\": 123,\n          \"end_line\": 129\n        },\n        {\n          \"source_id\": \"A-P21\",\n          \"start_line\": 46,\n          \"end_line\": 49\n        }\n      ],\n      \"limitations\": \"无法给出具体的显著性检验结果或置信区间，因为主文段未包含 Table 15 对应的标准差/检验统计量（这些位于附录 G.6，未被提供）。关于评估器与提示要求的不一致性，结论基于作者在主文中对评估设计的描述；若附录包含进一步微调或额外阐述，可能补充细节。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792993754,
+    "id": "chatcmpl-Ed7s2jukGuXRhKDz1iNJNze2DhifG",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261022101114-72366841-default-r0-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 3401,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1920,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 157,
+        "engine_ttlt_ms": 22488,
+        "pre_inference_ms": 76,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 363,
+        "service_ttlt_ms": 22680,
+        "user_visible_ttft_ms": 287
+      },
+      "prompt_tokens": 6731,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 10132
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "a5582ff8-009e-48f9-84e2-68a15db64ce4",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 24609,
+    "timestamp": 1792993777
+  }
+}
