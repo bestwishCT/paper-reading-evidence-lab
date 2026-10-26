@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"根据文中说明，MAUVE 仅用于评估 ASQA 与 ELI5 的生成流畅性，未对 QAMPARI 使用 MAUVE。给出理由是 QAMPARI 的任务只需返回短实体列表且模型在格式上高度一致，因此作者省略了 MAUVE。作者同时指出 MAUVE 对输出长度和文本风格敏感，因此将其作为一个“sanity check”（只要分数足够高便认为流畅性无疑虑）而非核心判据。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P3\",\n          \"start_line\": 65,\n          \"end_line\": 74\n        },\n        {\n          \"source_id\": \"SOURCE A-P3\",\n          \"start_line\": 27,\n          \"end_line\": 31\n        },\n        {\n          \"source_id\": \"SOURCE A-P3\",\n          \"start_line\": 42,\n          \"end_line\": 46\n        }\n      ],\n      \"limitations\": \"原文说明了为何不对 QAMPARI 运行 MAUVE 以及将 MAUVE 作为 sanity check，但没有给出“分数多少算足够高”的阈值，也未给出对不同模型/任务何时应弃用 MAUVE 的量化决策规则，因而无法唯一判断某一具体 MAUVE 分数是否可接受。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"附录 C 中写明，在运行 MAUVE 时将“问题”和“模型输出（或人工答案）”以空格拼接；同时将参考文献（references）和模型生成文本各自截断到 100 词（目的是因为 ELI5 的人工答案非常长，超过该长度时 MAUVE 不稳定）。此外正文说明在总体评估前，会按换行截断模型输出以删除换行后可能的多余内容。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P14\",\n          \"start_line\": 80,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15\",\n          \"start_line\": 1,\n          \"end_line\": 3\n        }\n      ],\n      \"limitations\": \"原文没有足够细节以唯一实现该流程：未定义“词（word）”如何计数（比如基于空白分隔还是子词/标记化），也未说明截断是在拼接前还是拼接后进行、当存在多条 reference 时是否对每条单独截断或对拼接后整体截断、截断时保留文本的前端还是尾端等关键操作顺序与策略，故不同实现会导致可观测差异。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"需要明确区分两类截断机制：一是为 MAUVE 指标专门施加的“100 词”截断（附录 C 指出在运行 MAUVE 时将 references 与生成各自截到 100 词），二是为整体评估前通用的按换行截断模型输出（正文指出在正式评测前按换行截断以去除换行后可能无关的信息）。因此不能把 MAUVE 的 100 词规则当作模型生成的上限或认为所有指标均以 100 词为约束——100 词截断是为稳定 MAUVE 的测量而设的预处理之一，换行截断是另一独立的输出清理步骤。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P14\",\n          \"start_line\": 80,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15\",\n          \"start_line\": 1,\n          \"end_line\": 3\n        },\n        {\n          \"source_id\": \"SOURCE A-P3\",\n          \"start_line\": 70,\n          \"end_line\": 74\n        }\n      ],\n      \"limitations\": \"原文表述足以区分两者的存在与目的，但没有明确说明在评测管线中两种截断的先后次序（例如是否先按换行截断再做 100 词裁剪），因此在复现时不同先后顺序可能引入差异。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"文中明确指出 MAUVE 对输出长度与文本风格敏感，且在 ELI5 上超过 100 词时不稳定，因此由长度/风格导致的结论具有边界性：当评估依赖 MAUVE 时，应限定在作者描述的输入长度与样式范围内才能对比结论。为避免夸大复现，建议的核查步骤（基于文中披露的做法）为：1）对照作者做法，对生成在评估前按换行进行初步截断（正文所述）；2）仅在运行 MAUVE 时，将 references 与生成各自截到 100 词并记录其分布；3）对关键模型重复多次运行并使用不同随机种子、汇报均值与标准差（作者在主实验中对大部分模型做了三次重复并报告均值）；4）检查 MAUVE 分数随文本长度/风格（如长短、是否包含列表或实体序列）变化的敏感性，若 MAUVE 明显随长度波动则不单独以其分数作为决定性结论，而应以人工或其他稳健指标辅证。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P3\",\n          \"start_line\": 70,\n          \"end_line\": 74\n        },\n        {\n          \"source_id\": \"SOURCE A-P14\",\n          \"start_line\": 82,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15\",\n          \"start_line\": 12,\n          \"end_line\": 16\n        }\n      ],\n      \"limitations\": \"作者提供了为何要做这些截断与重复实验的动机与部分实施细节，但未给出 MAUVE 可接受的数值阈值、重复次数是否充足的统计依据、以及长度/风格分箱的方法学细节。以上建议基于文中已披露的步骤与原则，但在具体实现（比如分箱策略、截断顺序、随机种子数量、何为“明显波动”）上仍需研究者自行决定或与作者确认，以避免过度解读复现结果。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792993581,
+    "id": "chatcmpl-Ed7pF8B3lhKhp73q0pnNORC1GMrSn",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261023022552-763f4920-default-r1-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 3552,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 2048,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 106,
+        "engine_ttlt_ms": 25186,
+        "pre_inference_ms": 105,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 555,
+        "service_ttlt_ms": 25668,
+        "user_visible_ttft_ms": 450
+      },
+      "prompt_tokens": 4187,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 7739
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "9622becc-d9a6-4016-bc91-59a59c2fce69",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 27956,
+    "timestamp": 1792993607
+  }
+}

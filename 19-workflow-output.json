@@ -1,0 +1,138 @@
+{
+  "mapping": {
+    "D1": [
+      {
+        "source_id": "SOURCE B-P6 physical PDF page 6",
+        "start_line": 1,
+        "end_line": 3
+      },
+      {
+        "source_id": "SOURCE B-P6 physical PDF page 6",
+        "start_line": 43,
+        "end_line": 50
+      },
+      {
+        "source_id": "SOURCE B-P6 physical PDF page 6",
+        "start_line": 62,
+        "end_line": 64
+      }
+    ],
+    "D2": [
+      {
+        "source_id": "SOURCE B-P6 physical PDF page 6",
+        "start_line": 44,
+        "end_line": 53
+      },
+      {
+        "source_id": "SOURCE B-P7 physical PDF page 7",
+        "start_line": 15,
+        "end_line": 19
+      }
+    ],
+    "D3": [
+      {
+        "source_id": "SOURCE B-P6 physical PDF page 6",
+        "start_line": 55,
+        "end_line": 56
+      },
+      {
+        "source_id": "SOURCE B-P7 physical PDF page 7",
+        "start_line": 33,
+        "end_line": 39
+      }
+    ],
+    "D4": [
+      {
+        "source_id": "SOURCE B-P7 physical PDF page 7",
+        "start_line": 21,
+        "end_line": 24
+      },
+      {
+        "source_id": "SOURCE B-P7 physical PDF page 7",
+        "start_line": 33,
+        "end_line": 39
+      }
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "定义（作者给出的任务结构与目标）：任务输入是一个以字符串序列化的JSON对象，包含k个键值对，且每个键与值为唯一、随机生成的128位UUID；另有一个指向该JSON内某个键的查询，目标是返回该键对应的值（value）。观测（作者陈述的设计动机）：作者有意使用随机UUID并减少自然语言语义成分，以最小化语言特征带来的潜在混淆，从而把任务精简为“从上下文中精确匹配并检索令牌”的能力测试。记录的数值对象与单位：UUID长度为“128-bit”；对象计数用k表示“key-value pairs”；样本量在下文独立设置。基准与条件：基准为是否能在模型输出中出现正确的value（见D3判据）；条件包括k的大小与相关键在序列化JSON中的位置。作者假设（显式）：移除语义能降低语言特性引入的混淆，从而更纯粹地衡量检索匹配能力（作者语句）。我的推论：通过使用随机且唯一的UUID，作者旨在排除语义线索（如词表相关的提示或语义模式），使得任务等价于精确字符串匹配检索。 证据：见下列引文。 特别注意：我只基于所给原文陈述回答，不推断作者在其他未给出处的意图或实现细节。",
+      "evidence": [
+        {
+          "source_id": "SOURCE B-P6 physical PDF page 6",
+          "start_line": 1,
+          "end_line": 3
+        },
+        {
+          "source_id": "SOURCE B-P6 physical PDF page 6",
+          "start_line": 43,
+          "end_line": 50
+        },
+        {
+          "source_id": "SOURCE B-P6 physical PDF page 6",
+          "start_line": 62,
+          "end_line": 64
+        }
+      ],
+      "limitations": "证据来自作者对任务设计与动机的陈述；无法从这些句子判断其它实现细节（例如UUID如何序列化、是否加空格或换行、是否有格式化元数据）或实验中是否存在其他未声明的过滤与预处理步骤。"
+    },
+    {
+      "id": "D2",
+      "answer": "恢复的实验参数与含义：k是输入JSON中键值对的总数（每个键唯一），每个JSON有1个相关键值对（目标对）和k−1个干扰对（distractors）。作者在实验中具体设置了k=75、k=140与k=300三个情形；每个情形下的样本数为500个示例（即每种k值的分母为500）。这些设置通过改变k来调节输入上下文长度，并通过在序列化JSON中改变要检索键的位置来调节相关信息在上下文中的位置。定义/观测/基准区分：定义——k与k−1的含义（作者写明）；观测——使用75/140/300并对每一项做500例；基准——评价指标是输出中是否包含正确value（参见D3）。作者假设与我的推论：作者假设增大k意味着更多干扰，从而更能暴露模型对长上下文中间区域检索能力的脆弱性；我推论k−1即干扰数在逻辑上等于“总条目减去1”。 证据：见下列引文。",
+      "evidence": [
+        {
+          "source_id": "SOURCE B-P6 physical PDF page 6",
+          "start_line": 44,
+          "end_line": 53
+        },
+        {
+          "source_id": "SOURCE B-P7 physical PDF page 7",
+          "start_line": 15,
+          "end_line": 19
+        }
+      ],
+      "limitations": "原文没给出是否对500个示例做随机种子固定、是否跨位置均匀分布或是否做重复实验；因此不能保证这三组样本在随机性或位置分布上等价，也无法知道统计不确定度（如置信区间）或是否有额外过滤。"
+    },
+    {
+      "id": "D3",
+      "answer": "根据原文用于判断“正确value出现在输出”的判据：作者明确写道，他们测量准确率是“通过评估正确的value是否出现在预测输出中”（即只要输出文本包含正确的value即记为成功）。因此，若模型输出既包含正确value又包含额外文本（前后缀或额外字符），按作者的度量仍计为正确（成功）。相反，若模型仅生成“代码”或其它文本但没有直接包含正确的value，则按该判据为错误。定义/观测/推论区分：定义——准确率判据（作者陈述）；观测——本文提到LongChat在某些设置会生成代码而不是直接输出value（作者观察）；推论——基于定义，包含正确value加额外内容并不必然失败；纯生成代码且未包含value则必然根据该度量失败。 证据：参见下列引文。",
+      "evidence": [
+        {
+          "source_id": "SOURCE B-P6 physical PDF page 6",
+          "start_line": 55,
+          "end_line": 56
+        },
+        {
+          "source_id": "SOURCE B-P7 physical PDF page 7",
+          "start_line": 33,
+          "end_line": 39
+        }
+      ],
+      "limitations": "作者的度量是二值且仅检查“是否包含正确value”，未说明是否对部分匹配、格式差异（例如附带逗号、引号或大小写变化）或嵌在代码块中的值进行归一化或严格化处理；因此在实际判定时细节实现可能影响结果。并且本文未提供示例输出的评估脚本或模糊匹配规则，证据仅来源于任务描述与对LongChat行为空间的定性观察。"
+    },
+    {
+      "id": "D4",
+      "answer": "关于Claude与LongChat的观测范围与不可泛化性：原文观测到Claude-1.3与Claude-1.3 (100K)在所评估的k设置下接近完美表现（几乎全部正确），同时LongChat-13B (16K)在k=140且相关信息置于开头时常生成代码以检索键，而不是直接输出value。定义/观测/作者假设/推论区分：定义——模型表现描述（作者给出）；观测——Claude接近完美，LongChat倾向生成代码（作者观察）；作者假设——并未声称这些行为代表所有模型或所有上下文长度，仅报告所评估模型的表现。我的推论与限制性陈述：基于原文只能断言这些特定型号在这些特定设置下的表现，不能将此结果外推为（a）所有模型都会有类似趋势，（b）UUID长度（128-bit）或任务简化直接反映模型对任意长文本的理解能力，或（c）任意更长UUID/更复杂语义场景下的通用结论。证据详见下列引文。",
+      "evidence": [
+        {
+          "source_id": "SOURCE B-P7 physical PDF page 7",
+          "start_line": 21,
+          "end_line": 24
+        },
+        {
+          "source_id": "SOURCE B-P7 physical PDF page 7",
+          "start_line": 33,
+          "end_line": 39
+        }
+      ],
+      "limitations": "原文只报告了若干具体模型与若干k值下的行为，且对LongChat的代码生成行为为定性“我们定性观察到”。因此无法从这些证据推断普适性（包括其它未测试模型、不同UUID长度或不同任务语义恢复后的表现）。此外，作者未提供统计显著性、错误分析或输出实例来支持进一步的机械化归纳。"
+    }
+  ],
+  "checks": {
+    "fields_present": true,
+    "units_recorded": "k (key-value pairs), k-1 (distractors), UUID 128-bit, samples per setting = 500",
+    "json_valid": true,
+    "notes": "每个D项独立完整回答，证据引用保留了source_id原文标题。字段齐全并不等同于证据充分，已在各项limitations中说明证据缺口。"
+  }
+}

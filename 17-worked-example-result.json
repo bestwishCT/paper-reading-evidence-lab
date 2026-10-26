@@ -1,0 +1,14 @@
+{
+  "paper_claim_quality": "14/15",
+  "failed_claims": 8,
+  "hypothetical_joint_count_bounds": [
+    88,
+    96
+  ],
+  "hypothetical_independent_expected_count": 89.6,
+  "joint_rates_percent": [
+    73.33333333333333,
+    80.0
+  ],
+  "paper_end_to_end_rate": null
+}

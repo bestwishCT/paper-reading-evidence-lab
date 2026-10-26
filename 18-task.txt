@@ -1,0 +1,2 @@
+D1恢复MAUVE使用的数据集、排除QAMPARI的原因及sanity check定位；D2按附录C描述question、output/reference的拼接与100词截断，并指出原文没给足以唯一实现的细节；D3区分MAUVE截断和跨页的按换行截断模型输出，不能把两者当生成上限或所有指标100词上限；D4说明长度/风格敏感导致的结论边界，给出不夸大复现程度的核查步骤。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。

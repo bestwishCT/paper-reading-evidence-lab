@@ -1,0 +1,2 @@
+D1重建附录A生成sub-claims的训练示例数、每例claim数和生成模型；D2说明112/120与80.0%各自检查对象、分母、人工标准，算出前者失败数，但不能误把它们当端到端正确率；D3判断能否相乘给出端到端可靠率，说明需要什么联合数据；D4结合§3.2解释claim recall的NLI方向、仅三条claim覆盖的范围及验证局限。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。

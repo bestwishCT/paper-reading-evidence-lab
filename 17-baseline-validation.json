@@ -1,0 +1,91 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P14",
+      "start_line": 26,
+      "end_line": 33,
+      "text": "Specifically, we usetext-davinci-003 to gen-\nerate the sub-claims. We first manually annotate\nthree question and answer pairs from the original\nELI5 training set with 3 sub-claims each. Then,\nwe prompt text-davinci-003 with these pairs as\ndemonstrations. The full prompt with an example\nis shown in Table 22.\nInstructGPT generates coherent and faithful"
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P4",
+      "start_line": 44,
+      "end_line": 46,
+      "text": "GPT (text-davinci-003; Ouyang et al., 2022)\nto generate three “sub-claims”. Then we use\nTRUE8 (Honovich et al., 2022), a T5-11B (Raf-"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P14",
+      "start_line": 36,
+      "end_line": 43,
+      "text": "a random sample of 40 answers and their generated\nsub-claims (totaling to 120 sub-claims). For each\nsub-claim, we assign a score of 1 if it is relevant to\nthe question and faithful to the facts presented in\nthe ground truth, and 0 otherwise. We found that\n112 out of the 120 (93.33%) sub-claims received a\nscore of 1, meaning that our generated sub-claims\nare of high quality and faithful to the ground truth."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P14",
+      "start_line": 52,
+      "end_line": 60,
+      "text": "the final prediction of the NLI model. To this end,\nwe first manually annotate the entailment scores\nbetween 40 outputs and their sub-claims (in total\nof 120 pairs; these are the same questions from the\nprevious analysis). We then use the NLI model\nto obtain the entailment scores for the output and\nsub-claims. Using the human annotations as the\nground truth label, we found that the NLI model\nachieved an accuracy of 80.0%."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P14",
+      "start_line": 36,
+      "end_line": 43,
+      "text": "a random sample of 40 answers and their generated\nsub-claims (totaling to 120 sub-claims). For each\nsub-claim, we assign a score of 1 if it is relevant to\nthe question and faithful to the facts presented in\nthe ground truth, and 0 otherwise. We found that\n112 out of the 120 (93.33%) sub-claims received a\nscore of 1, meaning that our generated sub-claims\nare of high quality and faithful to the ground truth."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P14",
+      "start_line": 52,
+      "end_line": 60,
+      "text": "the final prediction of the NLI model. To this end,\nwe first manually annotate the entailment scores\nbetween 40 outputs and their sub-claims (in total\nof 120 pairs; these are the same questions from the\nprevious analysis). We then use the NLI model\nto obtain the entailment scores for the output and\nsub-claims. Using the human annotations as the\nground truth label, we found that the NLI model\nachieved an accuracy of 80.0%."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P14",
+      "start_line": 26,
+      "end_line": 33,
+      "text": "Specifically, we usetext-davinci-003 to gen-\nerate the sub-claims. We first manually annotate\nthree question and answer pairs from the original\nELI5 training set with 3 sub-claims each. Then,\nwe prompt text-davinci-003 with these pairs as\ndemonstrations. The full prompt with an example\nis shown in Table 22.\nInstructGPT generates coherent and faithful"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P4",
+      "start_line": 44,
+      "end_line": 50,
+      "text": "GPT (text-davinci-003; Ouyang et al., 2022)\nto generate three “sub-claims”. Then we use\nTRUE8 (Honovich et al., 2022), a T5-11B (Raf-\nfel et al., 2020) model fine-tuned on a collection of\nnatural language inference (NLI) datasets, to check\nwhether the model output entails the sub-claims\n(claim recall). TRUE targets factual correctness"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P14",
+      "start_line": 19,
+      "end_line": 23,
+      "text": "Instead, we leverage the original answers to gen-\nerate sub-claims and use them to serve as an esti-\nmate of the different aspects of the answers that\nwe expect the model to cover. This approach is\ninspired by works in summarization evaluation and"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P14",
+      "start_line": 33,
+      "end_line": 41,
+      "text": "InstructGPT generates coherent and faithful\nsub-claims. To ensure that the generated sub-\nclaims are of good quality, we manually inspect\na random sample of 40 answers and their generated\nsub-claims (totaling to 120 sub-claims). For each\nsub-claim, we assign a score of 1 if it is relevant to\nthe question and faithful to the facts presented in\nthe ground truth, and 0 otherwise. We found that\n112 out of the 120 (93.33%) sub-claims received a"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P14",
+      "start_line": 44,
+      "end_line": 46,
+      "text": "Furthermore, the average number of words in the\ngenerated sub-claims is 14 words, and they are\ntypically just one sentence long. This is aligned"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P14",
+      "start_line": 49,
+      "end_line": 60,
+      "text": "NLI model accurately predicts the entailment\nof sub-claims. We further analyze our sub-claim\nevaluation metrics by checking the error rate of\nthe final prediction of the NLI model. To this end,\nwe first manually annotate the entailment scores\nbetween 40 outputs and their sub-claims (in total\nof 120 pairs; these are the same questions from the\nprevious analysis). We then use the NLI model\nto obtain the entailment scores for the output and\nsub-claims. Using the human annotations as the\nground truth label, we found that the NLI model\nachieved an accuracy of 80.0%."
+    }
+  ]
+}

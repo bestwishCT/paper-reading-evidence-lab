@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"mapping\": {\n    \"D1\": \"SOURCE A-P3 physical PDF page 3; SOURCE A-P14 physical PDF page 14; SOURCE A-P15 physical PDF page 15\",\n    \"D2\": \"SOURCE A-P14 physical PDF page 14; SOURCE A-P15 physical PDF page 15\",\n    \"D3\": \"SOURCE A-P14 physical PDF page 14; SOURCE A-P15 physical PDF page 15\",\n    \"D4\": \"SOURCE A-P3 physical PDF page 3; SOURCE A-P14 physical PDF page 14\"\n  },\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"恢复MAUVE使用的数据集与定位要点：作者在主实验中对三数据集（ASQA、QAMPARI、ELI5）进行说明，但明确只对ASQA与ELI5部署MAUVE，省略QAMPARI。理由：QAMPARI为简短实体列表（factoid），模型在格式上稳定（因此MAUVE未被应用）。MAUVE同时作为‘sanity check’（当分数足够高时使用）。另外论文将语料分为100词段以便人工核验与在LLM上下文中检索。数值记录（来自表/段落）：表标题与列（例如表11）列出“Fluency (MAUVE)”等指标及具体数值（如ChatGPT 66.6），但论文未明示MAUVE的量纲/分母，故只能记录为“得分”置信数值；基线条件在文本中有说明（如ChatGPT VANILLA 使用 GTR top-5检索）。区分：定义—MAUVE作为流畅度度量；观测—作者观察到MAUVE对长度与风格敏感；作者假设—当MAUVE分数高足以作为sanity check时可用；我的推论—QAMPARI输出短且格式固定因此被排除。跨页句子已连读以保留原意。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P3 physical PDF page 3\",\n          \"start_line\": 65,\n          \"end_line\": 74\n        },\n        {\n          \"source_id\": \"SOURCE A-P3 physical PDF page 3\",\n          \"start_line\": 27,\n          \"end_line\": 31\n        },\n        {\n          \"source_id\": \"SOURCE A-P14 physical PDF page 14\",\n          \"start_line\": 80,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15 physical PDF page 15\",\n          \"start_line\": 26,\n          \"end_line\": 35\n        },\n        {\n          \"source_id\": \"SOURCE A-P3 physical PDF page 3\",\n          \"start_line\": 4,\n          \"end_line\": 11\n        }\n      ],\n      \"limitations\": \"文中给出MAUVE分数但未说明量纲/上限（是否0–100或其他标度）、计算细节及参数；只在文中陈述为sanity check，未给出阈值定义；QAMPARI被排除的理由基于任务格式与作者观察，而非对比实验数值证明。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"按附录C（实现细节）可复现的拼接与截断策略：作者说明在运行MAUVE时，将“question”和“model output (或 human answer)”通过空格拼接；对references与model generations均截断为100词（目的是避免E L I5极长答案导致不稳定）。此外，整体评价前先按换行截断模型输出以去除非instruction-tuned模型在换行后可能产生的冗余内容。缺失使实现不唯一的细节：未定义“词”如何计数（空格分割、子词/标记化或其他）、是否先对question和output分别截断再拼接或先拼接后整体截断、若有多参考答案如何处理（并列拼接顺序、分隔符）、是否保留原始换行/标点、大小写/归一化步骤、MAUVE调用参数与版本。以上缺失会导致不同实现产生可观差异。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P14 physical PDF page 14\",\n          \"start_line\": 80,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15 physical PDF page 15\",\n          \"start_line\": 1,\n          \"end_line\": 3\n        }\n      ],\n      \"limitations\": \"证明只来自文中两处陈述，作者没有给出精确的计数/截断顺序及tokenization规则，因而无法唯一重现；文中也未列出MAUVE的超参或实现脚本供核验。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"区分两类截断：一是MAUVE专用的100词截断（目的是避免E L I5超长参考导致MAUVE不稳定）；二是评价前对模型输出的按换行截断（预处理，删除换行后常见的无关续写）。两者目的不同：MAUVE截断是为使MAUVE度量稳定而施加的长度上限；换行截断是为去除非instruction-tuned模型的多余后续内容以免污染多项指标。不能把它们都当作“生成上限”或假定所有指标都以100词为上限：文中仅说明在运行MAUVE时做100词截断（并指出不稳定来源），而对其他指标只提到按换行截断输出作为通用预处理，未说其他指标统一采用100词上限。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P14 physical PDF page 14\",\n          \"start_line\": 80,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P15 physical PDF page 15\",\n          \"start_line\": 1,\n          \"end_line\": 3\n        },\n        {\n          \"source_id\": \"SOURCE A-P3 physical PDF page 3\",\n          \"start_line\": 70,\n          \"end_line\": 74\n        }\n      ],\n      \"limitations\": \"源文献只在MAUVE上下文明确提及100词截断，未详述是否对其它自动化指标（如NLI-based子声明度量或EM recall）做相同或不同的截断策略；因此推断二者目的不同是根据文中陈述，但无法排除作者在其他处另有处理未被提供。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"长度与文本风格敏感性对结论边界的影响及可行核查步骤：作者指出MAUVE对输出长度与文本风格敏感，且E L I5含非常长的人工答案使MAUVE不稳定（因此设100词截断并视为sanity check）。因此任何依赖MAUVE的结论对截断/拼接/风格差异敏感，结果可能随这些处理改变而偏移。务实的核查步骤（不夸大可复现程度）：1) 在完全记录的环境下复现：保存原始question、参考与生成（包括换行与空白），记录tokenizer与词计数方法；2) 对比三种处理：A. 无截断直接MAUVE（若可行）；B. 按文中描述的“拼接后各自/整体100词截断”多种实现（分别先各自截断再拼接、先拼接后截断）；C. 仅换行截断再评估；3) 在多种截断阈值（50/100/150词）与多种tokenization规则下运行，报告MAUVE随阈值的曲线；4) 记录MAUVE调用参数与随机种子并重复多次以评估方差；5) 对比ASQA与ELI5（MAUVE被部署的两组）与QAMPARI（未部署）的行为以验证排除QAMPARI的合理性。注意：这些步骤是基于文章陈述的可行核查建议，但因原文未给出精确实现细节，仍可能产生不可对齐的差异。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"SOURCE A-P3 physical PDF page 3\",\n          \"start_line\": 70,\n          \"end_line\": 74\n        },\n        {\n          \"source_id\": \"SOURCE A-P14 physical PDF page 14\",\n          \"start_line\": 81,\n          \"end_line\": 86\n        },\n        {\n          \"source_id\": \"SOURCE A-P14 physical PDF page 14\",\n          \"start_line\": 64,\n          \"end_line\": 65\n        }\n      ],\n      \"limitations\": \"作者未提供MAUVE调用细节、词计数/分词规则、是否对参考集合单独处理等关键信息；因此核查步骤为推荐的可行实验设计，但不能保证能完全重现原文数值；此外，如要严格复现还需访问作者实现或补充说明。\"\n    }\n  ],\n  \"final_checks\": {\n    \"checked_items\": [\n      \"已建立子题→来源映射\",\n      \"每项独立回答且包含证据与限制\",\n      \"证据条目使用了指定的source_id逐字复制并包含行号（整数）\",\n      \"记录了表头与数值出现位置，但未将‘字段齐全’误当作证据充分\"\n    ],\n    \"omissions\": \"原文未给出词的具体计数/分词规则、MAUVE实现参数、截断顺序与脚本，故这些为明显遗漏并在limitations中声明。\",\n    \"json_validity\": \"格式为严格JSON（对象、数组、字符串、整数），已检查合法性。\"\n  }\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792993611,
+    "id": "chatcmpl-Ed7pjE2Vqi5NuL9BOLLkZhoZH6wcv",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261026034612-0b298829-default-r2-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 4251,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1984,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 127,
+        "engine_ttlt_ms": 28335,
+        "pre_inference_ms": 74,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 237,
+        "service_ttlt_ms": 28437,
+        "user_visible_ttft_ms": 164
+      },
+      "prompt_tokens": 4317,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 8568
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "6fbac596-acfc-4c83-8e04-2553d52ccddd",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 32168,
+    "timestamp": 1792993640
+  }
+}

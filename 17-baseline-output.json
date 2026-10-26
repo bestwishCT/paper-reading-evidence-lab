@@ -1,0 +1,44 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "根据文中说明，生成sub-claims时用于示范的“训练示例”是三对手工标注的问题-答案对（manual annotate three question and answer pairs），每个示例包含3条sub-claims。用于生成的模型是text-davinci-003（即InstructGPT）。",
+      "evidence": [
+        { "source_id": "A-P14", "start_line": 26, "end_line": 33 },
+        { "source_id": "A-P4", "start_line": 44, "end_line": 46 }
+      ],
+      "limitations": "原文表述为“手工标注三对示例并用其作示范(prompt)”，这里把它理解为用于prompt示范的示例数；文中未说明是否还有其它用于微调的训练数据或更多示范，也未给出prompt细节和超参，故不能断言这是唯一的‘训练’定义。"
+    },
+    {
+      "id": "D2",
+      "answer": "文中给出的112/120是对生成的sub-claims质量的人工检查结果：从40个随机答案及其生成的sub-claims（合计120条sub-claims）中，对每条sub-claim按“是否与问题相关且忠实于参考答案”（打1或0）评分，112/120得1，因而失败数为8条。80.0%指的是NLI模型在判定“模型输出是否蕴含这些sub-claims”这一任务上的准确率：用人工注释的蕴含标签作为金标准，NLI模型在同样的120对（40个输出与其sub-claims）上取得80.0%的准确率。两者分别检验的是不同阶段（sub-claim生成质量 vs NLI判定准确性），因此不能直接当作端到端正确率。",
+      "evidence": [
+        { "source_id": "A-P14", "start_line": 36, "end_line": 43 },
+        { "source_id": "A-P14", "start_line": 52, "end_line": 60 }
+      ],
+      "limitations": "原文只给出汇总数字和评分准则的简要描述（相关且忠实 / 人工蕴含标签），未公开逐项标注记录或具体判例，无法检验打分一致性或标注细则的细化影响。"
+    },
+    {
+      "id": "D3",
+      "answer": "不能简单将112/120（≈93.33%）与80.0%相乘以得到端到端的可靠率。两个比率衡量不同错误来源，且可能相互关联：112/120衡量的是sub-claim本身是否忠实，80%衡量的是NLI模型判断蕴含的准确度。要算出端到端可靠率，需要联合的逐例数据——对每一对（模型输出, sub-claim），需要有：1) 人工标注该sub-claim是否忠实；2) 人工标注模型输出是否实际上蕴含该sub-claim（作为NLI的金标准）；3) NLI模型的判定结果。基于这些逐例的混淆矩阵或联合分布，才能计算“生成的sub-claim忠实且NLI判断为蕴含且判断正确”的真实概率。如果这些事件独立且无偏，乘法是粗略近似，但文中并未证明独立性或无偏，因此直接相乘会误导。",
+      "evidence": [
+        { "source_id": "A-P14", "start_line": 36, "end_line": 43 },
+        { "source_id": "A-P14", "start_line": 52, "end_line": 60 },
+        { "source_id": "A-P14", "start_line": 26, "end_line": 33 }
+      ],
+      "limitations": "文中未提供逐例联合标注表或交叉表，无法估计变量间的依赖性或条件错误率；因此无法给出实证的端到端置信区间或确切概率值。"
+    },
+    {
+      "id": "D4",
+      "answer": "根据§3.2和附录，claim recall的NLI方向是“检查模型输出是否蕴含(sub-claim)”——即将模型输出作为NLI的前提(premise)，sub-claim作为假设(hypothesis)，用TRUE判断蕴含与否，从而计算覆盖的比例。只用三条sub-claims意味着每个参考答案仅用三条人工或模型生成的短声明来代表其应覆盖的重要方面；文中指出这些sub-claims平均约14个词、通常为一句话，目的是捕捉原答案中的若干简短事实性主张。因此，claim recall的覆盖面受限于：1) 由text-davinci-003生成的三条sub-claims是否涵盖答案的所有关键事实；2) sub-claims本身的表述长度和抽象层级（短句容易遗漏细节或上下文限定）；3) NLI判定的误差（TRUE在人工注释上的准确率为80%），以及4) 手工检查样本规模有限（40个样本）。这些因素一起导致claim recall可能低估或高估模型对原答案事实点的实际覆盖，且无法替代对完整答案语义的人工逐条核验。",
+      "evidence": [
+        { "source_id": "A-P4", "start_line": 44, "end_line": 50 },
+        { "source_id": "A-P14", "start_line": 19, "end_line": 23 },
+        { "source_id": "A-P14", "start_line": 33, "end_line": 41 },
+        { "source_id": "A-P14", "start_line": 44, "end_line": 46 },
+        { "source_id": "A-P14", "start_line": 49, "end_line": 60 }
+      ],
+      "limitations": "只能依据文中有限描述判断方法学局限；文中未公开三条sub-claims的生成策略细节、覆盖率统计或对不同问题类型的分层评估，故无法量化覆盖缺失的典型规模或NLI错误对最终召回的具体影响。"
+    }
+  ]
+}

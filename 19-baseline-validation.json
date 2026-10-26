@@ -1,0 +1,98 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "B-P6",
+      "start_line": 43,
+      "end_line": 46,
+      "text": "In our synthetic key-value retrieval task, the inputs\nare (i) a string-serialized JSON object with k\nkey-value pairs, where each of the keys and values\nare unique, randomly generated UUIDs and (ii) a"
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P6",
+      "start_line": 61,
+      "end_line": 64,
+      "text": "plicitly seek to distill and simplify the task by\nremoving as much natural language semantics as\npossible (using random UUIDs instead), since lan-\nguage features may present potential confounders."
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P6",
+      "start_line": 65,
+      "end_line": 68,
+      "text": "For example, Transformer language models may\nhave varying sensitivity to different linguistic\nfeatures in their input (O’Connor and Andreas,\n2021)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P7",
+      "start_line": 15,
+      "end_line": 16,
+      "text": "We experiment with input contexts containing\n75, 140, and 300 key-value pairs (500 examples"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P7",
+      "start_line": 15,
+      "end_line": 16,
+      "text": "We experiment with input contexts containing\n75, 140, and 300 key-value pairs (500 examples"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P6",
+      "start_line": 49,
+      "end_line": 52,
+      "text": "specified key. Thus, each JSON object contains\none relevant key-value pair (where the value is\nto be returned), and\nk −1 irrelevant ‘‘distractor’’"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P6",
+      "start_line": 61,
+      "end_line": 64,
+      "text": "plicitly seek to distill and simplify the task by\nremoving as much natural language semantics as\npossible (using random UUIDs instead), since lan-\nguage features may present potential confounders."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P6",
+      "start_line": 55,
+      "end_line": 56,
+      "text": "We again measure accuracy by evaluating whether\nthe correct value appears in the predicted output."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P7",
+      "start_line": 33,
+      "end_line": 39,
+      "text": "middle of their input context. LongChat-13B\n(16K) exhibits a different trend in the 140\nkey-value setting; we qualitatively observe that\nwhen relevant information is placed at the start\nof the input context, LongChat-13B (16K) tends\nto generate code to retrieve the key, rather than\noutputting the value directly."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P7",
+      "start_line": 21,
+      "end_line": 23,
+      "text": "mance. Claude-1.3 and Claude-1.3 (100K) do\nnearly perfectly on all evaluated input context\nlengths, but other models struggle, especially"
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P7",
+      "start_line": 24,
+      "end_line": 28,
+      "text": "when contexts have 140 or 300 key-value\npairs—although the synthetic key-value retrieval\ntask only requires identifying exact match within\nthe input context, not all models achieve high\nperformance."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P7",
+      "start_line": 33,
+      "end_line": 39,
+      "text": "middle of their input context. LongChat-13B\n(16K) exhibits a different trend in the 140\nkey-value setting; we qualitatively observe that\nwhen relevant information is placed at the start\nof the input context, LongChat-13B (16K) tends\nto generate code to retrieve the key, rather than\noutputting the value directly."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P6",
+      "start_line": 61,
+      "end_line": 64,
+      "text": "plicitly seek to distill and simplify the task by\nremoving as much natural language semantics as\npossible (using random UUIDs instead), since lan-\nguage features may present potential confounders."
+    }
+  ]
+}

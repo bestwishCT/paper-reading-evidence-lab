@@ -1,0 +1,89 @@
+{
+  "subquestion_to_sources": {
+    "D1": ["SOURCE A-P14 physical PDF page 14"],
+    "D2": ["SOURCE A-P14 physical PDF page 14"],
+    "D3": ["SOURCE A-P4 physical PDF page 4", "SOURCE A-P14 physical PDF page 14"],
+    "D4": ["SOURCE A-P4 physical PDF page 4", "SOURCE A-P14 physical PDF page 14"]
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "重建附录A中用于生成sub-claims的“训练示例数、每例claim数和生成模型”：定义/方法（作者陈述）：作者使用text-davinci-003（即InstructGPT）作为生成模型，并以手工注释的示例作为演示提示；观测（作者给出的数据与表头）：作者先“手工注释三对问题-答案，每对含3个sub-claims”作为demonstrations用于prompt；随后在随机样本上让模型生成sub-claims并人工检查40个答案，合计120个生成的sub-claims。数值要素明确记录：对象=生成的sub-claims；表头/度量=每例sub-claim是否“相关且忠实”（二元0/1）；单位=个数；分母=120（样本数量）；基准/条件=随机抽样40个答案，用3示例作为prompt示范。我的推论（非原文断言）：因此用于prompt的“训练示例”（即示范）为3对Q-A，各含3个sub-claims；实际用于质量估计的生成子集为40个被评估的答案、共120个sub-claims；每个答案由模型生成3个sub-claims（平均14词、通常1句）。",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 26,
+          "end_line": 33
+        },
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 36,
+          "end_line": 46
+        }
+      ],
+      "limitations": "证据来源仅说明作者如何构造prompt与抽样与生成统计，未公开用于prompt的完整示例文本或是否在其他地方做数据扩充；“训练示例”这里指作者用作demonstrations的3对示例，而非对text-davinci-003再训练；关于是否对全部ELI5数据生成sub-claims、或仅对样本生成，原文只给出40个样本的说明，无法扩展到整集。"
+    },
+    {
+      "id": "D2",
+      "answer": "将文中两个比值逐条拆解并计算失败数：指标一（112/120）：定义/观测：作者在随机40答案的生成sub-claims（总120个sub-claims）上人工打分，规则为“若与问题相关且对原答案事实忠实则记1，否则记0”。数值与单位：112/120 = 93.33%，分母=120个生成sub-claims，分子=打1分的个数。由此失败数=120−112=8（个sub-claim未通过人工质量判定）。证据见下。指标二（80.0%）：定义/观测：作者对NLI模型（TRUE）对“输出与sub-claim”之间的entailment预测进行了验证，使用人工注释作为金标准，样本为同样的40输出与其sub-claims，总对数120对；NLI模型在这些人工标注的label上的准确率为80.0%。数值与单位：80.0% = NLI模型在120个output–sub-claim对上的分类准确率，错误数=20%×120=24。声明限制：作者在文本中并未把112/120或80.0%定义为“端到端正确率”，二者分别衡量sub-claim生成的质量和NLI判定的准确性，不能直接混为端到端成功率。 ",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 36,
+          "end_line": 43
+        },
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 49,
+          "end_line": 60
+        }
+      ],
+      "limitations": "两组百分比虽都基于同一120样本规模，但原文未给出两项结果在每个样本上的逐一对应表（即哪8个生成sub-claim被判为不忠实、以及NLI在具体哪些对上出错），因此无法以这些独立汇总数直接计算或断定更复杂的联合事件。"
+    },
+    {
+      "id": "D3",
+      "answer": "判断是否可将上述概率相乘得到端到端可靠率：结论（基于定义与观测的区分）：不能在当前给出的汇总统计下直接相乘得到端到端可靠率。理由：作者报告了两类独立汇总指标——sub-claim生成的人工质量率（112/120）与NLI模型对entailment的准确率（80.0%），但没有提供两者的联合分布或逐样本对应数据。要合法地将数值相乘以得端到端“模型输出既生成高质量sub-claim且NLI正确判定”的概率，需要原始的逐样本三元标注：对每个sub-claim记录（A）人工质量标签（相关且忠实0/1）、（B）人工的output→sub-claim entailment标签（金标准0/1）、（C）NLI模型的预测（0/1）。有了这些，可以计算P(A and B and NLI_predicts_B)或至少P(A and NLI_predicts_entailment)的真实比率。如果只有独立边际率而无条件/联合信息，直接相乘会隐含独立性假设（未验证），可能严重高估或低估真实端到端可靠率。",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P4 physical PDF page 4",
+          "start_line": 45,
+          "end_line": 50
+        },
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 36,
+          "end_line": 60
+        }
+      ],
+      "limitations": "原文表述缺乏逐样本联合表（混淆矩阵或三向表），因此我不能提供数值性的端到端概率；所需的联合数据在原文未公开，任何乘法合成都将依赖不可证的独立性假设。"
+    },
+    {
+      "id": "D4",
+      "answer": "结合§3.2说明claim recall的NLI方向、仅三条claim覆盖的范围及验证局限：定义/方法（作者陈述）：§3.2与附录说明作者先用InstructGPT（text-davinci-003）生成三条sub-claims作为“答案的不同方面的估计”，然后使用TRUE（T5-11B）NLI模型判断“模型输出是否entail这些sub-claims”，以此计算claim recall（即对每条sub-claim，若模型输出蕴含该sub-claim则计为1，平均得到recall）。NLI方向明确为“model output entails sub-claim”（premise=模型输出，hypothesis=sub-claim），并使用concat(passages)的形式在其他评估中做entailment判定（AIS框架下的定义）。覆盖范围与局限（观测与推论）：仅用三条sub-claims意味着每个原始答案被压缩成最多三项要点，用以代表“不同方面”；这固有地限制了覆盖度——若原答案包含更多事实或细节，三条sub-claims可能不能覆盖全部要点（作者亦以此为设计初衷去捕获“短事实claim”）。NLI验证的局限包括：NLI模型本身有误差（在人工标注的120对上准确率80.0%），加之sub-claim生成也非完美（112/120被判相关且忠实），以及NLI使用的前提与拼接策略（concat）与数据格式化也可能影响判定。综上，claim recall度量在方向上是“是否被模型输出所蕴含”，但其覆盖性与判定准确性依赖于（1）三条sub-claims是否实际穷尽答案要点、（2）sub-claim生成质量、（3）NLI模型的判别准确率；原文未提供能量化这三者联合影响的逐样本数据，因此claim recall虽比传统ROUGE在某些方面更贴近正确性，但仍有验证局限。",
+      "evidence": [
+        {
+          "source_id": "SOURCE A-P4 physical PDF page 4",
+          "start_line": 43,
+          "end_line": 50
+        },
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 20,
+          "end_line": 33
+        },
+        {
+          "source_id": "SOURCE A-P14 physical PDF page 14",
+          "start_line": 49,
+          "end_line": 60
+        },
+        {
+          "source_id": "SOURCE A-P4 physical PDF page 4",
+          "start_line": 110,
+          "end_line": 118
+        }
+      ],
+      "limitations": "原文说明了方法与部分验证（如人工抽样、NLI准确率），但未发布逐条sub-claim与对应模型输出、人工entailment标签及NLI预测的逐样本对照表；因此无法量化三条sub-claims对不同类型答案（长答案、多事实答案）的真实覆盖率，也无法精确校正NLI误判对claim recall的影响。"
+    }
+  ],
+  "final_check": "已对D1–D4核对是否遗漏关键数值与单位：所有引用的数值（112/120、120、40、93.33%、80.0%）均标明对象、分母与条件；跨页证据引用保留原始source_id并按页行号断句连读。JSON格式已严格化，且每个决策独立完整。注意：字段齐全并不等同证据充分——几处结论需逐样本联合数据才能得到更强证据支持，原文未提供该联合数据。"
+}

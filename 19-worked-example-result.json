@@ -1,0 +1,30 @@
+{
+  "teaching_only_not_author_code": true,
+  "cases": {
+    "bare": {
+      "contains": true,
+      "exact": true,
+      "json_contract": false
+    },
+    "explanation": {
+      "contains": true,
+      "exact": false,
+      "json_contract": false
+    },
+    "json_extra": {
+      "contains": true,
+      "exact": false,
+      "json_contract": false
+    },
+    "code_no_value": {
+      "contains": false,
+      "exact": false,
+      "json_contract": false
+    },
+    "json_contract": {
+      "contains": true,
+      "exact": false,
+      "json_contract": true
+    }
+  }
+}

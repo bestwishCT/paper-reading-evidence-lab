@@ -1,0 +1,2 @@
+D1解释随机唯一UUID任务输入、目标和移除自然语言语义的设计动机；D2恢复k取值、每设置样本数和一相关k减1干扰，不混为自然QA实验；D3根据原文正确value出现在输出的判据，分析包含正确值外加额外内容是否必然失败、纯代码未给值是否必然成功；D4解释Claude近乎完美与LongChat140返回代码观察各自范围，不能推断所有模型、UUID长度或真实长文理解能力。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。

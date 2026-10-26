@@ -1,0 +1,13 @@
+{
+  "teaching_only_not_author_implementation": true,
+  "concat_then_clip": {
+    "total_words": 100,
+    "answer_words": 2
+  },
+  "clip_answer_then_concat": {
+    "total_words": 108,
+    "answer_words": 10
+  },
+  "separate_first_line_example": "answer line",
+  "mauve_score": null
+}

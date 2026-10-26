@@ -1,0 +1,149 @@
+独立记录号 8d9d3cd1-bf66-41b6-8dce-7f0502d7ab9e（不含任务语义）
+答题前建立子题→来源映射。每一D独立答全，不把答案放到另一题替代。数值记录对象、表头、单位、分母、基准与条件；跨页句子连读。区分定义、观测、作者假设和你的推论。每个比较引用同时含基准与目标的证据，保留相关脚注与限制；source_id从SOURCE标题逐字复制。最后对照D1–D4核对遗漏、单位及JSON合法性；不能把字段齐全当证据充分。
+D1解释随机唯一UUID任务输入、目标和移除自然语言语义的设计动机；D2恢复k取值、每设置样本数和一相关k减1干扰，不混为自然QA实验；D3根据原文正确value出现在输出的判据，分析包含正确值外加额外内容是否必然失败、纯代码未给值是否必然成功；D4解释Claude近乎完美与LongChat140返回代码观察各自范围，不能推断所有模型、UUID长度或真实长文理解能力。
+仅根据所供原文。严格JSON，decisions数组D1至D4各一项；每项有answer、evidence数组（source_id、start_line、end_line）和limitations；行号是无前导0的整数。约1000至1400中文字。不重抄原文，不输出markdown代码块。证据不足明说。
+SOURCE B-P6 physical PDF page 6
+1: Figure 6: Example of the key-value retrieval task, with an input context and the desired model output. Given a
+2: key, the goal is to return the associated value. All keys and values are 128-bit UUIDs. The relevant key-value pair
+3: for answering the query is bolded here within the input context for clarity.
+4: are often much better at using relevant information
+5: that occurs at the very beginning (primacy bias)
+6: and very end of contexts (recency bias), and suffer
+7: degraded performance when forced to use infor-
+8: mation within the middle of its input context. For
+9: example, GPT-3.5-Turbo’s multi-document QA
+10: performance can drop by more than 20%—in the
+11: worst case, performance in 20- and 30-document
+12: settings is lower than performance without any
+13: input documents (i.e., closed-book performance;
+14: 56.1%). These results indicate that current models
+15: cannot effectively reason over their entire context
+16: window when prompted for downstream tasks.
+17: Extended-context models are not necessarily
+18: better at using input context. When the input
+19: context fits in the context window of both a model
+20: and its extended-context counterpart, we see that
+21: performance between them is nearly identical. For
+22: example, the 10- and 20-document settings both
+23: fit in the context window of GPT-3.5-Turbo and
+24: GPT-3.5-Turbo (16K), and we observe that their
+25: performance as a function of position of relative
+26: information is nearly superimposed (solid purple
+27: and dashed brown series in Figure 5). These re-
+28: sults indicate that extended-context models are
+29: not necessarily better than their non-extended
+30: counterparts at using their input context.
+31: 3 How Well Can Language Models
+32: Retrieve From Input Contexts?
+33: Given that language models struggle to retrieve
+34: and use information from the middle of their input
+35: contexts in the multi-document question answer-
+36: ing task, to what extent can they simply retrieve
+37: from input contexts? We study this question with
+38: a synthetic key-value retrieval task, which is de-
+39: signed to provide a minimal testbed for the basic
+40: ability to retrieve matching tokens from an input
+41: context.
+42: 3.1 Experimental Setup
+43: In our synthetic key-value retrieval task, the inputs
+44: are (i) a string-serialized JSON object with k
+45: key-value pairs, where each of the keys and values
+46: are unique, randomly generated UUIDs and (ii) a
+47: key within the aforementioned JSON object. The
+48: goal is to return the value associated with the
+49: specified key. Thus, each JSON object contains
+50: one relevant key-value pair (where the value is
+51: to be returned), and
+52: k −1 irrelevant ‘‘distractor’’
+53: key-value pairs. Figure 6 provides an example
+54: input context and its corresponding desired output.
+55: We again measure accuracy by evaluating whether
+56: the correct value appears in the predicted output.
+57: Our synthetic key-value retrieval task shares
+58: similar goals with the Little Retrieval Test of
+59: Papailiopoulos et al. (2023) and the fine-grained
+60: line retrieval task of Li et al. (2023), but we ex-
+61: plicitly seek to distill and simplify the task by
+62: removing as much natural language semantics as
+63: possible (using random UUIDs instead), since lan-
+64: guage features may present potential confounders.
+65: For example, Transformer language models may
+66: have varying sensitivity to different linguistic
+67: features in their input (O’Connor and Andreas,
+68: 2021).
+69: 162
+
+SOURCE B-P7 physical PDF page 7
+1: Figure 7: The effect of changing the input context length and the position of relevant information on key-value
+2: retrieval performance. Lower positions are closer to the start of the input context. Although some models show
+3: perfect accuracy on this synthetic task (e.g., Claude-1.3 and Claude-1.3 (100K)), we see again that performance
+4: is often highest when relevant information is occurs at the very start or end of the context, and rapidly degrades
+5: when models must retrieve from the middle of the input context.
+6: To modulate the position of relevant infor-
+7: mation within the input context, we change the
+8: position of the key to retrieve within the serial-
+9: ized JSON object. To modulate the input context
+10: length, we change the number of input JSON
+11: key-value pairs k by adding or removing random
+12: keys, changing the number of distractor key-value
+13: pairs.
+14: 3.2 Results and Discussion
+15: We experiment with input contexts containing
+16: 75, 140, and 300 key-value pairs (500 examples
+17: each). We use the same set of models as the
+18: multi-document question answering experiments,
+19: see§2.2 for more details.
+20: Figure 7 presents key-value retrieval perfor-
+21: mance. Claude-1.3 and Claude-1.3 (100K) do
+22: nearly perfectly on all evaluated input context
+23: lengths, but other models struggle, especially
+24: when contexts have 140 or 300 key-value
+25: pairs—although the synthetic key-value retrieval
+26: task only requires identifying exact match within
+27: the input context, not all models achieve high
+28: performance.
+29: Similar to our multi-document QA results,
+30: GPT-3.5-Turbo, GPT-3.5-Turbo (16K), and
+31: MPT-30B-Instruct have the lowest performance
+32: when they must access key-value pairs in the
+33: middle of their input context. LongChat-13B
+34: (16K) exhibits a different trend in the 140
+35: key-value setting; we qualitatively observe that
+36: when relevant information is placed at the start
+37: of the input context, LongChat-13B (16K) tends
+38: to generate code to retrieve the key, rather than
+39: outputting the value directly.
+40: 4 Why Are Language Models Not
+41: Robust to Changes in the Position of
+42: Relevant Information?
+43: Our multi-document question answering and
+44: key-value retrieval results show that language
+45: models struggle to robustly access and use infor-
+46: mation in long input contexts, since performance
+47: degrades significantly when changing the position
+48: of relevant information. To better understand why,
+49: we perform some preliminary investigations into
+50: the role of model architecture (decoder-only vs.
+51: encoder-decoder), query-aware contextualization,
+52: and instruction fine-tuning.
+53: 4.1 Effect of Model Architecture
+54: The open models we evaluated are all
+55: decoder-only models—at each timestep, they may
+56: only attend to prior tokens. To better understand
+57: the potential effects of model architecture on
+58: how language model use context, we compare
+59: decoder-only and encoder-decoder language
+60: models.
+61: We experiment with Flan-T5-XXL (Raffel
+62: et al., 2020; Chung et al., 2022) and Flan-UL2
+63: (Tay et al., 2023). Flan-T5-XXL is trained with a
+64: sequences of 512 tokens (encoder and decoder).
+65: Flan-UL2 is initially trained with sequences of
+66: 512 tokens (encoder and decoder), but is then
+67: pre-trained for an extra 100K steps with 1024
+68: tokens (encoder and decoder) before instruction
+69: fine-tuning on sequences with 2048 tokens in the
+70: encoder and 512 tokens in the decoder. However,
+71: since these models use relative positional embed-
+72: dings, they can (in principle) extrapolate beyond
+73: 163

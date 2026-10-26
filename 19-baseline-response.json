@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"设计上使用随机且唯一的 UUID、并尽量移除自然语言语义，目的是构建一个尽量纯粹的检索测验，避免语言特征或语义知识成为干扰因素，从而更直接地考察模型从输入上下文中精确匹配和检索令牌的能力。文中明确指出键和值均为随机生成的 UUID，并且有意“移除尽可能多的自然语言语义”，以减少 Transformer 对不同语言特征敏感性带来的潜在混淆，从而让任务更接近对‘在上下文中找到精确匹配字符串’这一基本能力的测评。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 43,\n          \"end_line\": 46\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 61,\n          \"end_line\": 64\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 65,\n          \"end_line\": 68\n        }\n      ],\n      \"limitations\": \"结论仅基于所给原文片段；原文说明了动机与意图，但未给出对所有可能语言模型群体或不同随机化细节下的验证结果，因此无法从原文断言该设计完全消除了所有语义或架构相关的潜在混淆。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"根据原文，实验中使用的 k（即每个输入 JSON 中的键-值对数）取值为 75、140 与 300；每一种 k 设置下各有 500 个示例（‘500 examples each’）。每个 JSON 包含一个相关的键-值对和 k−1 个无关的‘干扰’键-值对（文中以 k−1 表示）。该合成任务与多文档问答是区分开的：这是专门构造的合成检索任务，且作者强调通过随机 UUID 去除自然语言语义，以避免将其混入自然语言问答实验的结论中。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 15,\n          \"end_line\": 16\n        },\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 15,\n          \"end_line\": 16\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 49,\n          \"end_line\": 52\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 61,\n          \"end_line\": 64\n        }\n      ],\n      \"limitations\": \"以上信息直接来自所给段落；原文未列出其它可能的 k 值或不同样本量的变体，也未在该片段中给出有关如何生成干扰项的更多细节，故不能推断实验以外的设置或不同数据分布下的行为。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"原文给出的准确度判据是“通过评估正确的 value 是否出现在预测输出中来度量准确率”（即只检测正确值是否出现）。因此，只要预测输出中包含正确的 value，按该判据该示例计为成功；即使输出同时包含额外内容（只要含有正确 value）也会被判为成功。相对地，如果模型仅生成用于检索的代码而未直接输出该 value（文中举例指 LongChat 在某些情形会生成代码以检索 key），则因为输出中不含正确的 value，根据所述判据该示例将被视为失败。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 55,\n          \"end_line\": 56\n        },\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 33,\n          \"end_line\": 39\n        }\n      ],\n      \"limitations\": \"原文只给出了‘正确 value 是否出现在输出中’这一二值判据的描述，未细化对额外内容的容忍度（例如是否要求独占输出、位置或格式等）。因此，关于含额外文本的具体计分细则（如重复、被遮盖或被格式化的情况）无法从文中精确还原。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"文中报告 Claude-1.3 及其 100K 扩展版本在所评估的合成任务上几乎完美（对所有评估的上下文长度表现良好），而其他模型在键值对数量为 140 或 300 时性能显著下降；LongChat-13B（16K）在 140 键设置中，当相关信息位于上下文起始处时，倾向于生成检索代码而非直接给出 value。基于这些观察，不能将单一模型的优异或特定模型返回代码的行为外推为对所有模型、不同 UUID 长度，或对实际自然长文理解能力的一般性结论。原因在于：原文强调该任务是合成且故意去语义化（限制了对自然语言理解能力的映射），并且比较的是一组特定模型与特定上下文长度，因此这些结果只说明在该合成设置与被测模型子集上的表现差异，而不能证明所有模型或不同字符串长度、真实长文本理解能力的普适规律。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 21,\n          \"end_line\": 23\n        },\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 24,\n          \"end_line\": 28\n        },\n        {\n          \"source_id\": \"B-P7\",\n          \"start_line\": 33,\n          \"end_line\": 39\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 61,\n          \"end_line\": 64\n        }\n      ],\n      \"limitations\": \"论述基于文中对若干模型与合成任务的报告；原文并未提供对所有现有模型的全面评估、不同 UUID 长度的对比试验，或将合成检索性能与自然语言长文本理解直接关联的证据，因此不能据此断言对更广泛模型族或更复杂语义任务的结论。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792993644,
+    "id": "chatcmpl-Ed7qGCDS3wlGy3YyYZ1D1mr9nHznv",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20260925115320-5b9094b9-default-r0-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 2528,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1024,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 42,
+        "engine_ttlt_ms": 17950,
+        "pre_inference_ms": 109,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 209,
+        "service_ttlt_ms": 18097,
+        "user_visible_ttft_ms": 99
+      },
+      "prompt_tokens": 2057,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 4585
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "45cef308-a2ec-4410-9fef-a22a3e1e39e4",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 22146,
+    "timestamp": 1792993663
+  }
+}
